@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { auth } from '../utils/firebaseService';
 
 class LoginForm extends Component {
 
@@ -7,15 +6,9 @@ class LoginForm extends Component {
 		super(props);
 		this.state = {
 			email: '',
-			password: ''
+			password: '',
+			user: null
 		}
-		this.handleClick = this.handleClick.bind(this);
-	}
-
-	handleClick() {
-		const { email, password } = this.state;
-		auth.signInWithEmailAndPassword(email, password)
-			.then(console.log('hello'));
 	}
 
 	render() {
@@ -35,10 +28,11 @@ class LoginForm extends Component {
 	          	onChange={(e) => this.setState({ password: e.target.value })} 
 	          	placeholder="password"
 	          />
-	          <button onClick={() => this.handleClick()}>login</button>
+	          <button onClick={() => this.props.handleClick(this.state.email, this.state.password)}>login</button>
 	          <p className="message">Forgot password? <a href="#">Click here</a></p>
 	        </form>
 	      </div>
+	      {this.state.user && JSON.stringify(this.state.user)}
 	    </div>
     )
 	}
