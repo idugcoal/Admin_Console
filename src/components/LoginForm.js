@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { auth } from './utils/firebaseService';
+import { auth } from '../utils/firebaseService';
 
 class LoginForm extends Component {
 
@@ -14,7 +14,8 @@ class LoginForm extends Component {
 
 	handleClick() {
 		const { email, password } = this.state;
-		auth.signInWithEmailAndPassword(email, password);
+		auth.signInWithEmailAndPassword(email, password)
+			.then(console.log('hello'));
 	}
 
 	render() {
