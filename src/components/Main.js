@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import LoginForm from './LoginForm';
-import { auth } from '../utils/firebaseService';
+import { auth } from '../utils/FirebaseService';
+import { fetchDepartures } from '../actions';
 import '../styles/Main.css';
 
 class Main extends Component {
@@ -13,8 +14,9 @@ class Main extends Component {
   }
 
   handleClick(email, password) {
-    auth.signInWithEmailAndPassword(email, password)
-      .then((user) => {this.setState({ user: user })});
+    // auth.signInWithEmailAndPassword(email, password)
+    //   .then((user) => console.log(user))
+    //   .then(() => fetchDepartures())
   }
 
   render() {
