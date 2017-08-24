@@ -4,6 +4,14 @@ import {
 	LOGIN_USER_SUCCESS
 } from './types';
 
+export const loginUserSuccess = (dispatch, user) => {
+	dispatch({
+		type: LOGIN_USER_SUCCESS,
+		payload: user
+	});
+}
+
+
 export const loginUser = ({ email, password }) => {
 	return (dispatch) => {
 		dispatch({ type: LOGIN_USER });
@@ -16,10 +24,3 @@ export const loginUser = ({ email, password }) => {
 	}
 }
 
-export const loginUserSuccess = (dispatch, user) => {
-	dispatch({
-		type: LOGIN_USER_SUCCESS,
-		payload: user
-	});
-
-}
