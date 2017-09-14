@@ -1,63 +1,91 @@
 import React, { Component } from 'react'
 import firebase from 'firebase'
-import { Grid } from 'react-virtualized'
+// import { Grid } from 'react-virtualized'
 
 export default class Table extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			arrivalList: [],
+			departureList: [],
+			preboardList: [],
+			wheelchairList: []
+		}
+	}
+
+	onArrivalsChanged(snapshot) {
+		let arrivalsArray = []
+		for (var timestamp in snapshot.val()) {
+			let temp = [];
+			for (var field in snapshot.val()[timestamp]) {
+				temp.push(snapshot.val()[timestamp][field])
+			}
+			arrivalsArray.push(temp)
+			this.setState({
+				arrivalList: [...this.state.arrivalList, arrivalsArray]
+			})
+		}
+	}
+	
+	onDeparturesChanged(snapshot) {
+		let departuresArray = []
+		for (var timestamp in snapshot.val()) {
+			let temp = [];
+			for (var field in snapshot.val()[timestamp]) {
+				temp.push(snapshot.val()[timestamp][field])
+			}
+			departuresArray.push(temp)
+			this.setState({
+				departureList: [...this.state.departureList, departuresArray]
+			})
+		}
+	}
+
+	onPreboardsChanged(snapshot) {
+		let preboardsArray = []
+		for (var timestamp in snapshot.val()) {
+			let temp = [];
+			for (var field in snapshot.val()[timestamp]) {
+				temp.push(snapshot.val()[timestamp][field])
+			}
+			preboardsArray.push(temp)
+			this.setState({
+				preboardList: [...this.state.preboardList, preboardsArray]
+			})
+		}
+	}
+
+	onWheelchairsChanged(snapshot) {
+		let wheelchairsArray = []
+		for (var timestamp in snapshot.val()) {
+			let temp = [];
+			for (var field in snapshot.val()[timestamp]) {
+				temp.push(snapshot.val()[timestamp][field])
+			}
+			wheelchairsArray.push(temp)
+			this.setState({
+				wheelchairList: [...this.state.wheelchairList, wheelchairsArray]
+			})
+		}
+	}
+	
 	componentDidMount() {
-		let arrivals = firebase.database().ref('/arrival/');
-		let arrivalsArray = [];
-		arrivals.on('value', function(snapshot) {
-			//set state with new value
-			for (var timestamp in snapshot.val()) {
-				let i = 0
-				for (var field in snapshot.val()[timestamp]) {
-					this.state = {
-						list: arrivalsArray[i] = snapshot.val()[timestamp][field]
-					}
-					console.log(field, arrivalsArray[i]);
-					i++;
-				}
-			}
-		})
-		let departures = firebase.database().ref('/departure/');
-		let departuresArray = [];
-		departures.on('value', function(snapshot) {
-			for (var timestamp in snapshot.val()) {
-				let i = 0
-				for (var field in snapshot.val()[timestamp]) {
-					departuresArray[i] = snapshot.val()[timestamp][field]
-					// console.log(field, departuresArray[i]);
-					i++;
-				}
-			}
-		})
-		let preboards = firebase.database().ref('/preboard/');
-		let preboardsArray = [];
-		preboards.on('value', function(snapshot) {
-			for (var timestamp in snapshot.val()) {
-				let i = 0
-				for (var field in snapshot.val()[timestamp]) {
-					preboardsArray[i] = snapshot.val()[timestamp][field]
-					// console.log(field, preboardsArray[i]);
-					i++;
-				}
-			} 
-		})
-		let wheelchairs = firebase.database().ref('/wheelchairs/');
-		let wheelchairsArray = [];
-		wheelchairs.on('value', function(snapshot) {
-			for (var timestamp in snapshot.val()) {
-				let i = 0;
-				for (var field in snapshot.val()[timestamp]) {
-					wheelchairsArray[i] = snapshot.val()[timestamp][field]
-					// console.log(field, wheelchairsArray[i]);
-					i++;
-				}
-			} 
-		})
+		let arrivalRef = firebase.database().ref('/arrival/');
+		arrivalRef.on('value', this.onArrivalsChanged.bind(this))
+
+		let departureRef = firebase.database().ref('/departure/');
+		departureRef.on('value', this.onDeparturesChanged.bind(this))
+
+		let preboardRef = firebase.database().ref('/preboard/');
+		preboardRef.on('value', this.onPreboardsChanged.bind(this))
+
+		let wheelchairRef = firebase.database().ref('/wheelchairs/');
+		wheelchairRef.on('value', this.onWheelchairsChanged.bind(this))
+		
 	}
 
   render () {
+  	console.log(this.state.arrivalList, this.state.departureList, this.state.wheelchairList)
     return (
       <div>
         Table. This is a protected route. You can only see this if you're authed.

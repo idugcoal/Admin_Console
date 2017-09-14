@@ -19,7 +19,7 @@ export default class Map extends Component {
         defaultCenter={{ lat: 33.6762, lng: -117.8675 }}
       >
         <Marker
-          position={{ lat: -34.397, lng: 150.644 }}
+          position={{ lat: 33.6762, lng: -117.8675 }}
         />
       </GoogleMap>
     );
