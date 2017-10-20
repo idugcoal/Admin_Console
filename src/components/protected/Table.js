@@ -1,13 +1,14 @@
 import React, { PureComponent } from 'react'
 import firebase from 'firebase'
 import { Grid, AutoSizer } from 'react-virtualized'
-// import styles from '../../styles/Table.css'
+import '../../styles/Table.css'
 // import cn from 'classnames'
 
 export default class Table extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
+			tableType: 'arrivals',
 			arrivalList: [['Airline', 'Comments', 'Dropoff', 'Device ID', 'User', 'Flight', 'P1 First Name', 'P1 Last Name', 'P1 Wheelchair', 'P2 First Name', 'P2 Last Name', 'P2 Wheelchair', 'Start Location', 'Starting GPS', 'Stops', 'End Time', 'Start Time']],
 			departureList: [['Airline', 'Final Comments', 'TSA Comments', 'Destination Gate', 'Device ID', 'User', 'Final Gate', 'Flight', 'P1 First Name', 'P1 Last Name', 'P1 Wheelchair', 'P2 First Name', 'P2 Last Name', 'P2 Wheelchair', 'Start Location', 'Starting GPS', 'Stops', 'End Time', 'Start Time', 'TSA Start Time', 'TSA End Time']],
 			preboardList: [['Airline', 'Comments', 'Device ID', 'User', 'Flight', 'First Name', 'Last Name', 'Wheelchair', 'Preboard Type', 'Starting Gate', 'End Time', 'Start Time']],
@@ -17,7 +18,8 @@ export default class Table extends PureComponent {
 		this.getColumnWidth = this.getColumnWidth.bind(this);
 		this.onArrivalsChanged = this.onArrivalsChanged.bind(this);
 		this.onDeparturesChanged = this.onDeparturesChanged.bind(this);
-		this.onPreboardsChanged = this.onPreboardsChanged.bind(this)
+		this.onPreboardsChanged = this.onPreboardsChanged.bind(this);
+		this.tableSwitcher = this.tableSwitcher.bind(this);
 	}
 
 	componentDidMount() {
@@ -77,19 +79,6 @@ export default class Table extends PureComponent {
 		}
 	}
 
-	// onWheelchairsChanged(snapshot) {
-	// 	let wheelchairsArray = []
-	// 	for (var timestamp in snapshot.val()) {
-	// 		let temp = [];
-	// 		for (var field in snapshot.val()[timestamp]) {
-	// 			temp.push(snapshot.val()[timestamp][field])
-	// 		}
-	// 		wheelchairsArray.push(temp)
-	// 		this.setState({
-	// 			wheelchairList: [...this.state.wheelchairList, wheelchairsArray]
-	// 		})
-	// 	}
-	// }
 	getColumnWidth({index}) {
 		switch(index) {
 			case 0:
@@ -105,6 +94,19 @@ export default class Table extends PureComponent {
 		}
 	}
 
+	tableSwitcher() {
+		switch(this.state.tableType) {
+			case 'arrivals':
+				return this.state.arrivalList
+			case 'departures':
+				return this.state.departureList
+			case 'preboards':
+				return this.state.preboardList
+			default:
+				return this.state.arrivalList
+		}
+	}
+
 	cellRenderer({ columnIndex, key, rowIndex, style }) {
 		// console.log(this.state.arrivalList[rowIndex][columnIndex])
 		return ( 
@@ -113,17 +115,17 @@ export default class Table extends PureComponent {
 				style={style}
 			>
 			
-			{this.state.arrivalList[rowIndex][columnIndex]}
+			{this.tableSwitcher()[rowIndex][columnIndex]}
 			</div>
 		)
 	}
 
   render () {
   	// console.log(this.state.arrivalList)//, this.state.departureList, this.state.wheelchairList)
-    if (this.state.arrivalList.length > 0) {
+    if (this.tableSwitcher().length > 0) {
 	    return (
 	      <div>
-	      	<div>
+	      	<div className="TitleBar">
 	        	Arrivals | Departures | Preboards
 	        </div>
 
@@ -131,12 +133,12 @@ export default class Table extends PureComponent {
 	        		{({width}) => (
 			      	  <Grid
 				        	cellRenderer={this.cellRenderer}
-				        	columnCount={18}
+				        	columnCount={this.tableSwitcher()[0].length}
 				        	columnWidth={this.getColumnWidth} 
 				        	height={800}
 				        	overscanColumnCount={0}
 				        	overscanRowCount={0}
-				        	rowCount={this.state.arrivalList.length}
+				        	rowCount={this.tableSwitcher().length}
 				        	rowHeight={30}
 				        	width={width} />
 	        		)}

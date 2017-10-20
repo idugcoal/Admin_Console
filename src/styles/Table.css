@@ -17,6 +17,11 @@
   border: 1px solid #e0e0e0;
 }
 
+.TitleBar {
+  height: 60px ;
+  font-size: 20px;
+}
+
 .evenRow,
 .oddRow {
   border-bottom: 1px solid #e0e0e0;
