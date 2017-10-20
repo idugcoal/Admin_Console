@@ -17,7 +17,7 @@ export default class Map extends Component {
     
     this.state = {
       wheelchairs : { map: function () { return 0 } },
-      locations : null
+      locations : {}
     }
 
     this.onWheelchairsChanged = this.onWheelchairsChanged.bind(this)
