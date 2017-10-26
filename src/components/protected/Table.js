@@ -20,6 +20,7 @@ export default class Table extends PureComponent {
 		this.onDeparturesChanged = this.onDeparturesChanged.bind(this);
 		this.onPreboardsChanged = this.onPreboardsChanged.bind(this);
 		this.tableSwitcher = this.tableSwitcher.bind(this);
+		this.onButtonPress = this.onButtonPress.bind(this);
 	}
 
 	componentDidMount() {
@@ -41,9 +42,19 @@ export default class Table extends PureComponent {
 				temp.push(snapshot.val()[timestamp][field])
 			}
 			//index 13: start location info
-			//index 14: stops
 			temp[13] = JSON.stringify(temp[13])
-			temp[14] = JSON.stringify(temp[14])
+			//index 14: stops
+			let stops = temp[14]
+			let stopString = ''
+			for (var i = 0; i < stops.length; i++) {
+				stopString += 'Stop #' + (i + 1).toString() + '\n'
+				stopString += 'Location: ' + stops[i]['stopLocation'] + '\n'
+				stopString += 'Latitude: ' + stops[i]['latitude'] + '\n'
+				stopString += 'Longitude: ' + stops[i]['longitude'] + '\n'
+				stopString += 'Timestamp: ' + stops[i]['timestamp'] + '\n\n'
+			}
+			
+			temp[14] = stopString;
 			arrivalsArray.push(temp)
 			this.setState({
 				arrivalList: [...this.state.arrivalList, temp]
@@ -79,6 +90,12 @@ export default class Table extends PureComponent {
 		}
 	}
 
+	onButtonPress(tableType) {
+		// this.setState({
+		// 	tableType: tableType
+		// })
+	}
+
 	getColumnWidth({index}) {
 		switch(index) {
 			case 0:
@@ -108,7 +125,7 @@ export default class Table extends PureComponent {
 	}
 
 	cellRenderer({ columnIndex, key, rowIndex, style }) {
-		// console.log(this.state.arrivalList[rowIndex][columnIndex])
+			// console.log(this.tableSwitcher()[rowIndex][columnIndex])
 		return ( 
 			<div
 				key={key}
@@ -126,7 +143,9 @@ export default class Table extends PureComponent {
 	    return (
 	      <div>
 	      	<div className="TitleBar">
-	        	Arrivals | Departures | Preboards
+	        	<button type="input" className="btn btn-primary" onClick={this.onButtonPress('arrivals')}>Arrivals</button>
+	        	<button type="input" className="btn btn-primary" onClick={this.onButtonPress('departures')}>Departures</button>
+	        	<button type="input" className="btn btn-primary" onClick={this.onButtonPress('preboards')}>Preboards</button>
 	        </div>
 
 	        	<AutoSizer disableHeight>

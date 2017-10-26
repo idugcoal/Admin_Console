@@ -9,6 +9,18 @@ import {
 import firebase from 'firebase'
 import { mapAPIKey } from '../../config/constants';
 
+const wheelchairs = [
+  [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+  [11, 12, 13, 14, 15, 16, 17, 18, 19, 20],                                                                                                                                                         
+  [21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+  [31, 32, 33, 34, 35, 36, 37, 38, 39, 40],
+  [41, 42, 43, 44, 45, 46, 47, 48, 49, 50],
+  [51, 52, 53, 54, 55, 56, 57, 58, 59, 60],
+  [61, 62, 63, 64, 65, 66, 67, 68, 69, 70],
+  [71, 72, 73, 74, 75, 76, 77, 78, 79, 80],
+  [81, 82, 83, 84, 85, 86, 87, 88, 89, 90],
+  [91, 92, 93, 94, 95, 96, 97, 98, 99, 100]
+];
 
 export default class Map extends Component {
 
@@ -21,6 +33,7 @@ export default class Map extends Component {
     }
 
     this.onWheelchairsChanged = this.onWheelchairsChanged.bind(this)
+    this.renderButtons = this.renderButtons.bind(this)
   }
 
   componentDidMount() {
@@ -52,6 +65,27 @@ export default class Map extends Component {
       locations: markers
     })
   }
+  onButtonPress(buttonValue) {
+    console.log(buttonValue)
+  }
+
+  renderButtons() {
+    let views = wheelchairs.map((row, index) => {
+      let inputRow = row.map((buttonValue, columnIndex) => {
+        return <button
+                  type='input'
+                  className='btn btn-secondary btn-xl'
+                  value={buttonValue}
+                  onClick={this.onButtonPress.bind(this, buttonValue)}
+                  key={'button-' + columnIndex}
+                >
+                  {buttonValue}
+                </button>
+      });
+      return <div className='btn-group mr-2' key={'row-' + index}>{inputRow}</div>
+    });
+    return <div className='bt-toolbar'> {views} </div>;
+  }
 
   render () {
     if(this.state.locations != null) {  
@@ -78,7 +112,11 @@ export default class Map extends Component {
       );
       return (
         <div>
+          <div style={{float: `left`, width: `450px`}} >
+            {this.renderButtons()}
+          </div>
           <MapWithAMarker
+            // style={{float: `right`}}
             googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${mapAPIKey}`}
             loadingElement={<div style={{ height: `100%` }} />}
             containerElement={<div style={{ height: `800px` }} />}
