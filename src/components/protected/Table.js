@@ -20,7 +20,6 @@ export default class Table extends PureComponent {
 		this.onDeparturesChanged = this.onDeparturesChanged.bind(this);
 		this.onPreboardsChanged = this.onPreboardsChanged.bind(this);
 		this.tableSwitcher = this.tableSwitcher.bind(this);
-		this.onButtonPress = this.onButtonPress.bind(this);
 	}
 
 	componentDidMount() {
@@ -91,9 +90,10 @@ export default class Table extends PureComponent {
 	}
 
 	onButtonPress(tableType) {
-		// this.setState({
-		// 	tableType: tableType
-		// })
+		this.setState({
+			tableType: tableType
+		})
+		console.log(tableType)
 	}
 
 	getColumnWidth({index}) {
@@ -125,7 +125,6 @@ export default class Table extends PureComponent {
 	}
 
 	cellRenderer({ columnIndex, key, rowIndex, style }) {
-			// console.log(this.tableSwitcher()[rowIndex][columnIndex])
 		return ( 
 			<div
 				key={key}
@@ -138,14 +137,13 @@ export default class Table extends PureComponent {
 	}
 
   render () {
-  	// console.log(this.state.arrivalList)//, this.state.departureList, this.state.wheelchairList)
     if (this.tableSwitcher().length > 0) {
 	    return (
 	      <div>
 	      	<div className="TitleBar">
-	        	<button type="input" className="btn btn-primary" onClick={this.onButtonPress('arrivals')}>Arrivals</button>
-	        	<button type="input" className="btn btn-primary" onClick={this.onButtonPress('departures')}>Departures</button>
-	        	<button type="input" className="btn btn-primary" onClick={this.onButtonPress('preboards')}>Preboards</button>
+	        	<button type="input" className="btn btn-primary" onClick={this.onButtonPress.bind(this, 'arrivals')}>Arrivals</button>
+	        	<button type="input" className="btn btn-primary" onClick={this.onButtonPress.bind(this, 'departures')}>Departures</button>
+	        	<button type="input" className="btn btn-primary" onClick={this.onButtonPress.bind(this, 'preboards')}>Preboards</button>
 	        </div>
 
 	        	<AutoSizer disableHeight>
