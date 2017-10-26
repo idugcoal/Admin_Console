@@ -74,7 +74,7 @@ export default class Map extends Component {
       let inputRow = row.map((buttonValue, columnIndex) => {
         return <button
                   type='input'
-                  className='btn btn-secondary btn-xl'
+                  className='btn btn-primary btn-xl'
                   value={buttonValue}
                   onClick={this.onButtonPress.bind(this, buttonValue)}
                   key={'button-' + columnIndex}

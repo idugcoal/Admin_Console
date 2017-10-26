@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react'
 import firebase from 'firebase'
 import { Grid, AutoSizer } from 'react-virtualized'
-import '../../styles/Table.css'
-// import cn from 'classnames'
+// import styles from '../../styles/Table.css'
+import styles from '../../styles/Table.js'
+import cn from 'classnames'
 
 export default class Table extends PureComponent {
 	constructor(props) {
+		console.log(styles)
 		super(props);
 		this.state = {
 			tableType: 'arrivals',
@@ -20,6 +22,7 @@ export default class Table extends PureComponent {
 		this.onDeparturesChanged = this.onDeparturesChanged.bind(this);
 		this.onPreboardsChanged = this.onPreboardsChanged.bind(this);
 		this.tableSwitcher = this.tableSwitcher.bind(this);
+		this.getRowClassName = this.getRowClassName.bind(this);
 	}
 
 	componentDidMount() {
@@ -93,22 +96,32 @@ export default class Table extends PureComponent {
 		this.setState({
 			tableType: tableType
 		})
-		console.log(tableType)
 	}
 
 	getColumnWidth({index}) {
-		switch(index) {
-			case 0:
-				return 75
-			case 5:
-				return 75
-			case 13:
-				return 650
-			case 14:
-				return 1000
-			default: 
-				return 150
+		if(this.state.tableType === 'arrivals') {
+			switch(index) {
+				case 0:
+					return 75
+				case 5:
+					return 75
+				case 13:
+					return 650
+				case 14:
+					return 1000
+				default: 
+					return 150
+			}
+		} else if (this.state.tableType === 'departures') {
+			return 250
+		} else {
+			return 250
 		}
+		
+	}
+
+	getRowClassName(row) {
+		return row % 2 === 0 ? styles.evenRow : styles.OddRow;
 	}
 
 	tableSwitcher() {
@@ -125,10 +138,18 @@ export default class Table extends PureComponent {
 	}
 
 	cellRenderer({ columnIndex, key, rowIndex, style }) {
+		const rowClass = this.getRowClassName(rowIndex);
+		console.log(rowClass)
+		const classNames = cn(rowClass, styles.cell, {
+      [styles.centeredCell]: columnIndex > 2,
+    });
+
+
 		return ( 
 			<div
 				key={key}
 				style={style}
+				className={classNames}
 			>
 			
 			{this.tableSwitcher()[rowIndex][columnIndex]}
