@@ -1,13 +1,11 @@
 import React, { PureComponent } from 'react'
 import firebase from 'firebase'
 import { Grid, AutoSizer } from 'react-virtualized'
-// import styles from '../../styles/Table.css'
-import styles from '../../styles/Table.js'
+import styles from '../../styles/Table.css'
 import cn from 'classnames'
 
 export default class Table extends PureComponent {
 	constructor(props) {
-		console.log(styles)
 		super(props);
 		this.state = {
 			tableType: 'arrivals',
@@ -49,13 +47,12 @@ export default class Table extends PureComponent {
 			let stops = temp[14]
 			let stopString = ''
 			for (var i = 0; i < stops.length; i++) {
-				stopString += 'Stop #' + (i + 1).toString() + '\n'
-				stopString += 'Location: ' + stops[i]['stopLocation'] + '\n'
-				stopString += 'Latitude: ' + stops[i]['latitude'] + '\n'
-				stopString += 'Longitude: ' + stops[i]['longitude'] + '\n'
-				stopString += 'Timestamp: ' + stops[i]['timestamp'] + '\n\n'
+				stopString += 'Stop #' + (i + 1).toString()
+				stopString += 'Location: ' + stops[i]['stopLocation']
+				stopString += 'Latitude: ' + stops[i]['latitude']
+				stopString += 'Longitude: ' + stops[i]['longitude']
+				stopString += 'Timestamp: ' + stops[i]['timestamp']
 			}
-			
 			temp[14] = stopString;
 			arrivalsArray.push(temp)
 			this.setState({
@@ -121,7 +118,12 @@ export default class Table extends PureComponent {
 	}
 
 	getRowClassName(row) {
-		return row % 2 === 0 ? styles.evenRow : styles.OddRow;
+		if(row === 0) return styles.headerCell
+		return row % 2 === 0 ? styles.evenRow : styles.oddRow;
+	}
+
+	getColumnClassName(column) {
+		if(column === 14) return styles.stops
 	}
 
 	tableSwitcher() {
@@ -139,17 +141,16 @@ export default class Table extends PureComponent {
 
 	cellRenderer({ columnIndex, key, rowIndex, style }) {
 		const rowClass = this.getRowClassName(rowIndex);
-		console.log(rowClass)
-		const classNames = cn(rowClass, styles.cell, {
+		const columnClass = this.getColumnClassName(columnIndex)
+		const classNames = cn(rowClass, columnClass, styles.cell, {
       [styles.centeredCell]: columnIndex > 2,
     });
-
-
+		
 		return ( 
 			<div
+				className={classNames}
 				key={key}
 				style={style}
-				className={classNames}
 			>
 			
 			{this.tableSwitcher()[rowIndex][columnIndex]}
@@ -161,7 +162,7 @@ export default class Table extends PureComponent {
     if (this.tableSwitcher().length > 0) {
 	    return (
 	      <div>
-	      	<div className="TitleBar">
+	      	<div className={styles.TitleBar}>
 	        	<button type="input" className="btn btn-primary" onClick={this.onButtonPress.bind(this, 'arrivals')}>Arrivals</button>
 	        	<button type="input" className="btn btn-primary" onClick={this.onButtonPress.bind(this, 'departures')}>Departures</button>
 	        	<button type="input" className="btn btn-primary" onClick={this.onButtonPress.bind(this, 'preboards')}>Preboards</button>
@@ -177,7 +178,7 @@ export default class Table extends PureComponent {
 				        	overscanColumnCount={0}
 				        	overscanRowCount={0}
 				        	rowCount={this.tableSwitcher().length}
-				        	rowHeight={30}
+				        	rowHeight={60}
 				        	width={width} />
 	        		)}
 	        		</AutoSizer>

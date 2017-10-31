@@ -9,6 +9,7 @@ import Table from './protected/Table'
 import Map from './protected/Map'
 import { logout } from '../helpers/auth'
 import { firebaseAuth } from '../config/constants'
+import styles from '../styles/index.css'
 
 function PrivateRoute ({component: Component, authed, ...rest}) {
   return (
@@ -59,42 +60,34 @@ export default class App extends Component {
     return this.state.loading === true ? <h1>Loading</h1> : (
       <BrowserRouter>
         <div>
-          <nav className="navbar navbar-default navbar-static-top">
-            <div className="container">
-              <div className="navbar-header">
-                <Link to="/" className="navbar-brand">Sierra Aviation Group | Admin Console</Link>
-              </div>
-              <ul className="nav navbar-nav pull-right">
-                <li>
-                  <Link to="/" className="navbar-brand">Home</Link>
-                </li>
-                <li>
-                  <Link to="/dashboard" className="navbar-brand">Dashboard</Link>
-                </li>
-                <li>
-                  <Link to="/table" className="navbar-brand">Table</Link>
-                </li>
-                 <li>
-                  <Link to="/map" className="navbar-brand">Map</Link>
-                </li>
-                <li>
-                  {this.state.authed
-                    ? <button
-                        style={{border: 'none', background: 'transparent'}}
-                        onClick={() => {
-                          logout()
-                        }}
-                        className="navbar-brand">Logout</button>
-                    : <span>
-                        <Link to="/login" className="navbar-brand">Login</Link>
-                        <Link to="/register" className="navbar-brand">Register</Link>
-                      </span>}
-                </li>
+          <header className={styles.siteHeader}>
+            <Link to="/" className={styles.logo}>Sierra Aviation Group</Link>
+            <nav className={styles.siteNav}>
+              <ul>
+                <li><Link to="/" className={styles.a}>Home</Link></li>
+                <li><Link to="/map" className={styles.a}>Wheelchair Map</Link></li>
+                <li><Link to="/table" className={styles.a}>Table</Link></li>
               </ul>
-            </div>
-          </nav>
-          <div className="container">
-            <div className="row">
+            </nav>
+            <div className={styles.accountActions}>
+              <ul>
+                  <li>
+                      {this.state.authed
+                        ? <Link to="/"
+                            onClick={() => {
+                              logout()
+                            }}
+                            className={styles.a}>Logout</Link>
+                        : <span>
+                            <Link to="/login" className="navbar-brand">Login</Link>
+                            <Link to="/register" className="navbar-brand">Register</Link>
+                          </span>}
+                    </li>
+                </ul>
+              </div>
+          </header>
+          <div className={styles.container}>
+            <div className={styles.row}>
               <Switch>
                 <Route path='/' exact component={Home} />
                 <PublicRoute authed={this.state.authed} path='/login' component={Login} />

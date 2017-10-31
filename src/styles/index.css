@@ -2,4 +2,70 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+  background-image: url("https://wallpaperscraft.com/image/flight_plane_sky_color_line_61872_1920x1080.jpg");
+}
+
+.container {
+	width: 90%;
+	margin: auto;
+}
+
+.row {
+	/*width: 80%;*/
+	margin: auto;
+	/*background-color: white;*/
+	padding: 20px;
+}
+
+.siteHeader {
+  background-color: #1D1F20;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  font-size: 0.9em;
+}
+
+.logo {
+  text-decoration: none;
+  color: #fff;
+  font-size: 1.2em;
+  margin: 0px 30px 0px 10px;
+  text-transform: uppercase;
+  letter-spacing: 3px; 
+}
+
+.siteNav ul {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.siteNav a {
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #fff;
+  padding: 20px;
+  display: inline-block;
+}
+
+.accountActions {
+  margin-left: auto;
+  display: flex;
+  margin-right: 10px;
+}
+
+.accountActions ul {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.accountActions a {
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #fff;
+  padding: 20px;
+  display: inline-block;
 }

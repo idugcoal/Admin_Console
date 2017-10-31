@@ -8,6 +8,7 @@ import {
 } from "react-google-maps";
 import firebase from 'firebase'
 import { mapAPIKey } from '../../config/constants';
+import styles from '../../styles/Map.css';
 
 const wheelchairs = [
   [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -29,6 +30,7 @@ export default class Map extends Component {
     
     this.state = {
       wheelchairs : { map: function () { return 0 } },
+      active: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true],
       locations : {}
     }
 
@@ -69,25 +71,38 @@ export default class Map extends Component {
     console.log(buttonValue)
   }
 
+  // renderButtons() {
+  //   let views = wheelchairs.map((row, index) => {
+  //     let inputRow = row.map((buttonValue, columnIndex) => {
+  //       return <button
+  //                 type='input'
+  //                 className='btn btn-primary btn-xl'
+  //                 value={buttonValue}
+  //                 onClick={this.onButtonPress.bind(this, buttonValue)}
+  //                 key={'button-' + columnIndex}
+  //               >
+  //                 {buttonValue}
+  //               </button>
+  //     });
+  //     return <div className='btn-group mr-2' key={'row-' + index}>{inputRow}</div>
+  //   });
+  //   return <div className='bt-toolbar'> {views} </div>;
+  // }
+
   renderButtons() {
     let views = wheelchairs.map((row, index) => {
       let inputRow = row.map((buttonValue, columnIndex) => {
-        return <button
-                  type='input'
-                  className='btn btn-primary btn-xl'
-                  value={buttonValue}
-                  onClick={this.onButtonPress.bind(this, buttonValue)}
-                  key={'button-' + columnIndex}
-                >
-                  {buttonValue}
-                </button>
-      });
-      return <div className='btn-group mr-2' key={'row-' + index}>{inputRow}</div>
-    });
-    return <div className='bt-toolbar'> {views} </div>;
+        
+
+        return <div className={styles.wheelchairButton} key={'button-' + columnIndex} onClick={this.onButtonPress.bind(this, buttonValue)}>{buttonValue}</div>
+      })
+      return <div className={styles.buttonContainer} key={'row-' + index}>{inputRow}</div>
+    })
+    return views
   }
 
   render () {
+    console.log(this.state.active)
     if(this.state.locations != null) {  
       const MapWithAMarker = compose(
         withScriptjs,
@@ -112,7 +127,8 @@ export default class Map extends Component {
       );
       return (
         <div>
-          <div style={{float: `left`, width: `450px`}} >
+          <div className={styles.leftPanel} >
+            <div className={styles.title}>Wheelchairs</div>
             {this.renderButtons()}
           </div>
           <MapWithAMarker

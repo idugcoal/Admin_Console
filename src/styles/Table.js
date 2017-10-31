@@ -1,4 +1,4 @@
-const style = {
+const styles = {
   evenRow: {
   	borderBottom: '1px solid #e0e0e0'
   },
@@ -8,5 +8,5 @@ const style = {
   }
 }
 
-export default style
+export default styles
 	

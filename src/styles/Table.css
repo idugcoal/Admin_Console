@@ -18,8 +18,9 @@
 }
 
 .TitleBar {
-  height: 60px ;
-  font-size: 20px;
+  height: 80px ;
+  font-size: 16px;
+
 }
 
 .evenRow,
@@ -42,7 +43,6 @@
 .cell {
   border-right: 1px solid #e0e0e0;
   border-bottom: 1px solid #e0e0e0;
-  background-color: pink;
 }
 .headerCell {
   font-weight: bold;
@@ -59,6 +59,9 @@
   text-align: center;
 }
 
+.stops {
+  background-color: pink;
+}
 .noCells {
   position: absolute;
   top: 0;
