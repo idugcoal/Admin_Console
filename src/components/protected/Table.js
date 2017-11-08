@@ -21,6 +21,8 @@ export default class Table extends PureComponent {
 		this.onPreboardsChanged = this.onPreboardsChanged.bind(this);
 		this.tableSwitcher = this.tableSwitcher.bind(this);
 		this.getRowClassName = this.getRowClassName.bind(this);
+		this.processGPS = this.processGPS.bind(this);
+		this.processStops = this.processStops.bind(this);
 	}
 
 	componentDidMount() {
@@ -34,18 +36,13 @@ export default class Table extends PureComponent {
 		preboardRef.once('value', this.onPreboardsChanged)
 	}
 
-	onArrivalsChanged(snapshot) {
-		let arrivalsArray = []
-		for (var timestamp in snapshot.val()) {
-			let temp = [];
-			for (var field in snapshot.val()[timestamp]) {
-				temp.push(snapshot.val()[timestamp][field])
-			}
-			//index 13: start location info
-			temp[13] = JSON.stringify(temp[13])
-			//index 14: stops
-			let stops = temp[14]
-			let stopString = ''
+	processGPS(gps) {
+		return JSON.stringify(gps)
+	}
+
+	processStops(s) {
+		let stops = s;
+		let stopString = ''
 			for (var i = 0; i < stops.length; i++) {
 				stopString += 'Stop #' + (i + 1).toString()
 				stopString += 'Location: ' + stops[i]['stopLocation']
@@ -53,7 +50,18 @@ export default class Table extends PureComponent {
 				stopString += 'Longitude: ' + stops[i]['longitude']
 				stopString += 'Timestamp: ' + stops[i]['timestamp']
 			}
-			temp[14] = stopString;
+		return stopString
+	}
+
+	onArrivalsChanged(snapshot) {
+		let arrivalsArray = []
+		for (var timestamp in snapshot.val()) {
+			let temp = [];
+			for (var field in snapshot.val()[timestamp]) {
+				temp.push(snapshot.val()[timestamp][field])
+			}
+			temp[13] = this.processGPS(temp[13])
+			temp[14] = this.processStops(temp[14]);
 			arrivalsArray.push(temp)
 			this.setState({
 				arrivalList: [...this.state.arrivalList, temp]
@@ -68,9 +76,11 @@ export default class Table extends PureComponent {
 			for (var field in snapshot.val()[timestamp]) {
 				temp.push(snapshot.val()[timestamp][field])
 			}
+			temp[15] = this.processGPS(temp[15]);
+			temp[16] = this.processStops(temp[16]);
 			departuresArray.push(temp)
 			this.setState({
-				departureList: [...this.state.departureList, departuresArray]
+				departureList: [...this.state.departureList, temp]
 			})
 		}
 	}
@@ -84,7 +94,7 @@ export default class Table extends PureComponent {
 			}
 			preboardsArray.push(temp)
 			this.setState({
-				preboardList: [...this.state.preboardList, preboardsArray]
+				preboardList: [...this.state.preboardList, temp]
 			})
 		}
 	}
@@ -123,6 +133,7 @@ export default class Table extends PureComponent {
 	}
 
 	getColumnClassName(column) {
+		if(column === 13) return styles.gps
 		if(column === 14) return styles.stops
 	}
 

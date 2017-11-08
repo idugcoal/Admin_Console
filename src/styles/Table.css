@@ -58,7 +58,9 @@
   color: #fff;
   text-align: center;
 }
-
+.gps {
+  background-color: yellow;
+}
 .stops {
   background-color: pink;
 }
