@@ -12,6 +12,7 @@ export default class Table extends PureComponent {
 			arrivalList: [['Airline', 'Comments', 'Dropoff', 'Device ID', 'User', 'Flight', 'P1 First Name', 'P1 Last Name', 'P1 Wheelchair', 'P2 First Name', 'P2 Last Name', 'P2 Wheelchair', 'Start Location', 'Starting GPS', 'Stops', 'End Time', 'Start Time']],
 			departureList: [['Airline', 'Final Comments', 'TSA Comments', 'Destination Gate', 'Device ID', 'User', 'Final Gate', 'Flight', 'P1 First Name', 'P1 Last Name', 'P1 Wheelchair', 'P2 First Name', 'P2 Last Name', 'P2 Wheelchair', 'Start Location', 'Starting GPS', 'Stops', 'End Time', 'Start Time', 'TSA Start Time', 'TSA End Time']],
 			preboardList: [['Airline', 'Comments', 'Device ID', 'User', 'Flight', 'First Name', 'Last Name', 'Wheelchair', 'Preboard Type', 'Starting Gate', 'End Time', 'Start Time']],
+			searchText: ''
 		}
 
 		this.cellRenderer = this.cellRenderer.bind(this);
@@ -23,6 +24,8 @@ export default class Table extends PureComponent {
 		this.getRowClassName = this.getRowClassName.bind(this);
 		this.processGPS = this.processGPS.bind(this);
 		this.processStops = this.processStops.bind(this);
+		this.handleChange = this.handleChange.bind(this);
+		this.filterList = this.filterList.bind(this);
 	}
 
 	componentDidMount() {
@@ -99,6 +102,27 @@ export default class Table extends PureComponent {
 				preboardList: [...this.state.preboardList, temp]
 			})
 		}
+	}
+
+	handleChange(s) {
+		this.setState({
+			searchText: s.target.value
+		})
+		// setTimeout(() => console.log(this.state.searchText), 1)
+		// console.log(this.state.searchText);
+		console.log(this.filterList())
+	}
+
+	filterList() {
+		let list = this.tableSwitcher();
+		return list.filter((item, index, array) => {
+			if(index === 0) return true
+			for(let key in item) {
+				if(item[key].toString().search(this.state.searchText) !== -1)
+					return true
+			}
+			return false
+		})
 	}
 
 	onButtonPress(tableType) {
@@ -179,7 +203,8 @@ export default class Table extends PureComponent {
 	        	<button type="input" className="btn btn-primary" onClick={this.onButtonPress.bind(this, 'arrivals')}>Arrivals</button>
 	        	<button type="input" className="btn btn-primary" onClick={this.onButtonPress.bind(this, 'departures')}>Departures</button>
 	        	<button type="input" className="btn btn-primary" onClick={this.onButtonPress.bind(this, 'preboards')}>Preboards</button>
-	        	<span className={styles.TableType}>{this.state.tableType}</span>
+	        	<span className={styles.TableType}>{this.state.tableType}
+	        	<input type="text" placeholder="Search..." value={this.state.searchText} onChange={this.handleChange} /></span>
 	        </div>
 
 	        	<AutoSizer disableHeight>
