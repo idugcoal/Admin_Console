@@ -22,10 +22,14 @@
   font-size: 16px;
 
 }
+.TableType {
+  background-color: white;
+}
 
 .evenRow,
 .oddRow {
   border-bottom: 1px solid #e0e0e0;
+  background-color: #ebebeb;
 }
 .oddRow {
   background-color: #fafafa;
@@ -59,10 +63,14 @@
   text-align: center;
 }
 .gps {
-  background-color: yellow;
+
 }
 .stops {
   background-color: pink;
+  font-size: 1em;
+  line-height: .75em;
+  text-align: none;
+  justify-content: left;
 }
 .noCells {
   position: absolute;

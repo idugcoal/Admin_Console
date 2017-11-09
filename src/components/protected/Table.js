@@ -16,9 +16,9 @@ export default class Table extends PureComponent {
 
 		this.cellRenderer = this.cellRenderer.bind(this);
 		this.getColumnWidth = this.getColumnWidth.bind(this);
-		this.onArrivalsChanged = this.onArrivalsChanged.bind(this);
-		this.onDeparturesChanged = this.onDeparturesChanged.bind(this);
-		this.onPreboardsChanged = this.onPreboardsChanged.bind(this);
+		this.onArrivalsLoaded = this.onArrivalsLoaded.bind(this);
+		this.onDeparturesLoaded = this.onDeparturesLoaded.bind(this);
+		this.onPreboardsLoaded = this.onPreboardsLoaded.bind(this);
 		this.tableSwitcher = this.tableSwitcher.bind(this);
 		this.getRowClassName = this.getRowClassName.bind(this);
 		this.processGPS = this.processGPS.bind(this);
@@ -27,33 +27,33 @@ export default class Table extends PureComponent {
 
 	componentDidMount() {
 		let arrivalRef = firebase.database().ref('/arrivals/');
-		arrivalRef.once('value', this.onArrivalsChanged)
+		arrivalRef.on('value', this.onArrivalsLoaded);
+		// arrivalRef.on('value', () => {console.log('value added')})
 
 		let departureRef = firebase.database().ref('/departures/');
-		departureRef.once('value', this.onDeparturesChanged)
+		departureRef.on('value', this.onDeparturesLoaded)
 
 		let preboardRef = firebase.database().ref('/preboards/');
-		preboardRef.once('value', this.onPreboardsChanged)
+		preboardRef.on('value', this.onPreboardsLoaded)
 	}
 
 	processGPS(gps) {
-		return JSON.stringify(gps)
+		return <a href={`http://www.google.com/maps/place/${gps.latitude},${gps.longitude}`}> Map </a>
 	}
 
 	processStops(s) {
 		let stops = s;
-		let stopString = ''
+		let stopsArray = []
+		if(s[0] !== '0') {
 			for (var i = 0; i < stops.length; i++) {
-				stopString += 'Stop #' + (i + 1).toString()
-				stopString += 'Location: ' + stops[i]['stopLocation']
-				stopString += 'Latitude: ' + stops[i]['latitude']
-				stopString += 'Longitude: ' + stops[i]['longitude']
-				stopString += 'Timestamp: ' + stops[i]['timestamp']
+				stopsArray.push(<a href={`http://www.google.com/maps/place/${stops[i]['latitude']},${stops[i]['longitude']}`} title={stops[i].timestamp} key={i+stops[i].timestamp}> {stops[i]['stopLocation']} </a>)
 			}
-		return stopString
+		}
+		return stopsArray
 	}
 
-	onArrivalsChanged(snapshot) {
+	onArrivalsLoaded(snapshot) {
+		this.setState({ arrivalList: [['Airline', 'Comments', 'Dropoff', 'Device ID', 'User', 'Flight', 'P1 First Name', 'P1 Last Name', 'P1 Wheelchair', 'P2 First Name', 'P2 Last Name', 'P2 Wheelchair', 'Start Location', 'Starting GPS', 'Stops', 'End Time', 'Start Time']] })
 		let arrivalsArray = []
 		for (var timestamp in snapshot.val()) {
 			let temp = [];
@@ -69,7 +69,8 @@ export default class Table extends PureComponent {
 		}
 	}
 	
-	onDeparturesChanged(snapshot) {
+	onDeparturesLoaded(snapshot) {
+		this.setState({ departureList: [['Airline', 'Final Comments', 'TSA Comments', 'Destination Gate', 'Device ID', 'User', 'Final Gate', 'Flight', 'P1 First Name', 'P1 Last Name', 'P1 Wheelchair', 'P2 First Name', 'P2 Last Name', 'P2 Wheelchair', 'Start Location', 'Starting GPS', 'Stops', 'End Time', 'Start Time', 'TSA Start Time', 'TSA End Time']] })
 		let departuresArray = []
 		for (var timestamp in snapshot.val()) {
 			let temp = [];
@@ -85,7 +86,8 @@ export default class Table extends PureComponent {
 		}
 	}
 
-	onPreboardsChanged(snapshot) {
+	onPreboardsLoaded(snapshot) {
+		this.setState({ preboardList: [['Airline', 'Comments', 'Device ID', 'User', 'Flight', 'First Name', 'Last Name', 'Wheelchair', 'Preboard Type', 'Starting Gate', 'End Time', 'Start Time']] })
 		let preboardsArray = []
 		for (var timestamp in snapshot.val()) {
 			let temp = [];
@@ -106,24 +108,24 @@ export default class Table extends PureComponent {
 	}
 
 	getColumnWidth({index}) {
-		if(this.state.tableType === 'arrivals') {
+		// if(this.state.tableType === 'arrivals') {
 			switch(index) {
 				case 0:
 					return 75
 				case 5:
 					return 75
 				case 13:
-					return 650
+					return 150
 				case 14:
-					return 1000
+					return 200
 				default: 
 					return 150
 			}
-		} else if (this.state.tableType === 'departures') {
-			return 250
-		} else {
-			return 250
-		}
+		// } else if (this.state.tableType === 'departures') {
+		// 	return 250
+		// } else {
+		// 	return 250
+		// }
 		
 	}
 
@@ -177,6 +179,7 @@ export default class Table extends PureComponent {
 	        	<button type="input" className="btn btn-primary" onClick={this.onButtonPress.bind(this, 'arrivals')}>Arrivals</button>
 	        	<button type="input" className="btn btn-primary" onClick={this.onButtonPress.bind(this, 'departures')}>Departures</button>
 	        	<button type="input" className="btn btn-primary" onClick={this.onButtonPress.bind(this, 'preboards')}>Preboards</button>
+	        	<span className={styles.TableType}>{this.state.tableType}</span>
 	        </div>
 
 	        	<AutoSizer disableHeight>
