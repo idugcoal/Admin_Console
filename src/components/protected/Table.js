@@ -31,7 +31,6 @@ export default class Table extends PureComponent {
 	componentDidMount() {
 		let arrivalRef = firebase.database().ref('/arrivals/');
 		arrivalRef.on('value', this.onArrivalsLoaded);
-		// arrivalRef.on('value', () => {console.log('value added')})
 
 		let departureRef = firebase.database().ref('/departures/');
 		departureRef.on('value', this.onDeparturesLoaded)
@@ -106,11 +105,9 @@ export default class Table extends PureComponent {
 
 	handleChange(s) {
 		this.setState({
-			searchText: s.target.value
+			searchText: s.target.value,
+			filteredList: this.filterList()
 		})
-		// setTimeout(() => console.log(this.state.searchText), 1)
-		// console.log(this.state.searchText);
-		console.log(this.filterList())
 	}
 
 	filterList() {
@@ -164,15 +161,20 @@ export default class Table extends PureComponent {
 	}
 
 	tableSwitcher() {
-		switch(this.state.tableType) {
-			case 'arrivals':
-				return this.state.arrivalList
-			case 'departures':
-				return this.state.departureList
-			case 'preboards':
-				return this.state.preboardList
-			default:
-				return this.state.arrivalList
+		if (this.state.searchText !== '') return this.state.filteredList
+		else {
+			switch(this.state.tableType) {
+				case 'arrivals':
+					return this.state.arrivalList
+				case 'departures':
+					return this.state.departureList
+				case 'preboards':
+					return this.state.preboardList
+				case 'filtered':
+					return this.state.filteredList
+				default:
+					return this.state.arrivalList
+			}
 		}
 	}
 
