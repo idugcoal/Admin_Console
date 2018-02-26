@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import firebase from 'firebase'
-import { Grid, AutoSizer } from 'react-virtualized'
+import { MultiGrid, AutoSizer } from 'react-virtualized'
 import styles from '../../styles/Table.css'
 import cn from 'classnames'
 
@@ -9,10 +9,11 @@ export default class Table extends PureComponent {
 		super(props);
 		this.state = {
 			tableType: 'arrivals',
+			searchText: '',
 			arrivalList: [['Airline', 'Comments', 'Dropoff', 'Device ID', 'User', 'Flight', 'P1 First Name', 'P1 Last Name', 'P1 Wheelchair', 'P2 First Name', 'P2 Last Name', 'P2 Wheelchair', 'Start Location', 'Starting GPS', 'Stops', 'End Time', 'Start Time']],
 			departureList: [['Airline', 'Final Comments', 'TSA Comments', 'Destination Gate', 'Device ID', 'User', 'Final Gate', 'Flight', 'P1 First Name', 'P1 Last Name', 'P1 Wheelchair', 'P2 First Name', 'P2 Last Name', 'P2 Wheelchair', 'Start Location', 'Starting GPS', 'Stops', 'End Time', 'Start Time', 'TSA Start Time', 'TSA End Time']],
 			preboardList: [['Airline', 'Comments', 'Device ID', 'User', 'Flight', 'First Name', 'Last Name', 'Wheelchair', 'Preboard Type', 'Starting Gate', 'End Time', 'Start Time']],
-			searchText: ''
+			transferList: [['Airline', 'Comments', 'Device ID', 'User', 'Ending Gate', 'Flight', 'First Name', 'Last Name', 'Wheelchair', 'Starting Gate', 'End Time', 'Start Time']]
 		}
 
 		this.cellRenderer = this.cellRenderer.bind(this);
@@ -20,12 +21,18 @@ export default class Table extends PureComponent {
 		this.onArrivalsLoaded = this.onArrivalsLoaded.bind(this);
 		this.onDeparturesLoaded = this.onDeparturesLoaded.bind(this);
 		this.onPreboardsLoaded = this.onPreboardsLoaded.bind(this);
+		this.onTransfersLoaded = this.onTransfersLoaded.bind(this);
 		this.tableSwitcher = this.tableSwitcher.bind(this);
 		this.getRowClassName = this.getRowClassName.bind(this);
 		this.processGPS = this.processGPS.bind(this);
 		this.processStops = this.processStops.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 		this.filterList = this.filterList.bind(this);
+		this.getActiveButton = this.getActiveButton.bind(this);
+	}
+
+	shouldComponentUpdate() {
+		return true
 	}
 
 	componentDidMount() {
@@ -37,6 +44,9 @@ export default class Table extends PureComponent {
 
 		let preboardRef = firebase.database().ref('/preboards/');
 		preboardRef.on('value', this.onPreboardsLoaded)
+
+		let transferRef = firebase.database().ref('/transfers/');
+		transferRef.on('value', this.onTransfersLoaded)
 	}
 
 	processGPS(gps) {
@@ -56,7 +66,6 @@ export default class Table extends PureComponent {
 
 	onArrivalsLoaded(snapshot) {
 		this.setState({ arrivalList: [['Airline', 'Comments', 'Dropoff', 'Device ID', 'User', 'Flight', 'P1 First Name', 'P1 Last Name', 'P1 Wheelchair', 'P2 First Name', 'P2 Last Name', 'P2 Wheelchair', 'Start Location', 'Starting GPS', 'Stops', 'End Time', 'Start Time']] })
-		let arrivalsArray = []
 		for (var timestamp in snapshot.val()) {
 			let temp = [];
 			for (var field in snapshot.val()[timestamp]) {
@@ -64,7 +73,6 @@ export default class Table extends PureComponent {
 			}
 			temp[13] = this.processGPS(temp[13])
 			temp[14] = this.processStops(temp[14]);
-			arrivalsArray.push(temp)
 			this.setState({
 				arrivalList: [...this.state.arrivalList, temp]
 			})
@@ -73,7 +81,6 @@ export default class Table extends PureComponent {
 	
 	onDeparturesLoaded(snapshot) {
 		this.setState({ departureList: [['Airline', 'Final Comments', 'TSA Comments', 'Destination Gate', 'Device ID', 'User', 'Final Gate', 'Flight', 'P1 First Name', 'P1 Last Name', 'P1 Wheelchair', 'P2 First Name', 'P2 Last Name', 'P2 Wheelchair', 'Start Location', 'Starting GPS', 'Stops', 'End Time', 'Start Time', 'TSA Start Time', 'TSA End Time']] })
-		let departuresArray = []
 		for (var timestamp in snapshot.val()) {
 			let temp = [];
 			for (var field in snapshot.val()[timestamp]) {
@@ -81,7 +88,6 @@ export default class Table extends PureComponent {
 			}
 			temp[15] = this.processGPS(temp[15]);
 			temp[16] = this.processStops(temp[16]);
-			departuresArray.push(temp)
 			this.setState({
 				departureList: [...this.state.departureList, temp]
 			})
@@ -90,35 +96,33 @@ export default class Table extends PureComponent {
 
 	onPreboardsLoaded(snapshot) {
 		this.setState({ preboardList: [['Airline', 'Comments', 'Device ID', 'User', 'Flight', 'First Name', 'Last Name', 'Wheelchair', 'Preboard Type', 'Starting Gate', 'End Time', 'Start Time']] })
-		let preboardsArray = []
 		for (var timestamp in snapshot.val()) {
 			let temp = [];
 			for (var field in snapshot.val()[timestamp]) {
 				temp.push(snapshot.val()[timestamp][field])
 			}
-			preboardsArray.push(temp)
 			this.setState({
 				preboardList: [...this.state.preboardList, temp]
 			})
 		}
 	}
 
-	handleChange(s) {
-		this.setState({
-			searchText: s.target.value,
-			filteredList: this.filterList()
-		})
+	onTransfersLoaded(snapshot) {
+		this.setState({ transferList: [['Airline', 'Comments', 'Device ID', 'User', 'Ending Gate', 'Flight', 'First Name', 'Last Name', 'Wheelchair', 'Starting Gate', 'End Time', 'Start Time']] })
+		for (var timestamp in snapshot.val()) {
+			let temp = [];
+			for (var field in snapshot.val()[timestamp]) {
+				temp.push(snapshot.val()[timestamp][field])
+			}
+			this.setState({
+				transferList: [...this.state.transferList, temp]
+			})
+		}
 	}
 
-	filterList() {
-		let list = this.tableSwitcher();
-		return list.filter((item, index, array) => {
-			if(index === 0) return true
-			for(let key in item) {
-				if(item[key].toString().search(this.state.searchText) !== -1)
-					return true
-			}
-			return false
+	handleChange(e) {
+		this.setState({
+			searchText: e.target.value
 		})
 	}
 
@@ -128,8 +132,35 @@ export default class Table extends PureComponent {
 		})
 	}
 
+	tableSwitcher() {
+		switch(this.state.tableType) {
+			case 'arrivals':
+				return this.filterList(this.state.searchText, this.state.arrivalList)
+			case 'departures':
+				return this.filterList(this.state.searchText, this.state.departureList)
+			case 'preboards':
+				return this.filterList(this.state.searchText, this.state.preboardList)
+			case 'transfers':
+				return this.filterList(this.state.searchText, this.state.transferList)
+			default:
+				return this.filterList(this.state.searchText, this.state.arrivalList)
+		}
+	}
+
+	filterList(searchText, list) {
+		return list.filter((row, index) => {
+			if(index === 0) return true
+			for(let column in row) {
+				let cell = row[column]
+				if(cell.toString().toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
+					return true;
+				}
+			}
+			return false;
+		})
+	}
+
 	getColumnWidth({index}) {
-		// if(this.state.tableType === 'arrivals') {
 			switch(index) {
 				case 0:
 					return 75
@@ -142,11 +173,9 @@ export default class Table extends PureComponent {
 				default: 
 					return 150
 			}
-		// } else if (this.state.tableType === 'departures') {
-		// 	return 250
-		// } else {
-		// 	return 250
-		// }
+	}
+
+	getActiveButton() {
 		
 	}
 
@@ -160,39 +189,20 @@ export default class Table extends PureComponent {
 		if(column === 14) return styles.stops
 	}
 
-	tableSwitcher() {
-		if (this.state.searchText !== '') return this.state.filteredList
-		else {
-			switch(this.state.tableType) {
-				case 'arrivals':
-					return this.state.arrivalList
-				case 'departures':
-					return this.state.departureList
-				case 'preboards':
-					return this.state.preboardList
-				case 'filtered':
-					return this.state.filteredList
-				default:
-					return this.state.arrivalList
-			}
-		}
-	}
-
 	cellRenderer({ columnIndex, key, rowIndex, style }) {
 		const rowClass = this.getRowClassName(rowIndex);
 		const columnClass = this.getColumnClassName(columnIndex)
 		const classNames = cn(rowClass, columnClass, styles.cell, {
       [styles.centeredCell]: columnIndex > 2,
     });
-		
+
 		return ( 
 			<div
 				className={classNames}
 				key={key}
 				style={style}
 			>
-			
-			{this.tableSwitcher()[rowIndex][columnIndex]}
+				{this.tableSwitcher()[rowIndex][columnIndex]}
 			</div>
 		)
 	}
@@ -202,19 +212,21 @@ export default class Table extends PureComponent {
 	    return (
 	      <div>
 	      	<div className={styles.TitleBar}>
-	        	<button type="input" className="btn btn-primary" onClick={this.onButtonPress.bind(this, 'arrivals')}>Arrivals</button>
-	        	<button type="input" className="btn btn-primary" onClick={this.onButtonPress.bind(this, 'departures')}>Departures</button>
-	        	<button type="input" className="btn btn-primary" onClick={this.onButtonPress.bind(this, 'preboards')}>Preboards</button>
-	        	<span className={styles.TableType}>{this.state.tableType}
-	        	<input type="text" placeholder="Search..." value={this.state.searchText} onChange={this.handleChange} /></span>
+	        	<button type="input" className={styles.btn} onClick={this.onButtonPress.bind(this, 'arrivals')}>Arrivals</button>
+	        	<button type="input" className={styles.btn} onClick={this.onButtonPress.bind(this, 'departures')}>Departures</button>
+	        	<button type="input" className={styles.btn} onClick={this.onButtonPress.bind(this, 'preboards')}>Preboards</button>
+	        	<button type="input" className={styles.btn} onClick={this.onButtonPress.bind(this, 'transfers')}>Transfers</button>
+	        	<span className={styles.TableType}>
+	        		<input className={styles.Search} type="text" placeholder="Search..." value={this.state.searchText} onChange={this.handleChange} />
+	        	</span>
 	        </div>
-
 	        	<AutoSizer disableHeight>
 	        		{({width}) => (
-			      	  <Grid
+			      	  <MultiGrid
 				        	cellRenderer={this.cellRenderer}
 				        	columnCount={this.tableSwitcher()[0].length}
 				        	columnWidth={this.getColumnWidth} 
+				        	fixedRowCount={1}
 				        	height={800}
 				        	overscanColumnCount={0}
 				        	overscanRowCount={0}

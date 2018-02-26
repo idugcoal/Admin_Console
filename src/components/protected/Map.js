@@ -29,26 +29,22 @@ export default class Map extends Component {
     super(props)
     
     this.state = {
-      wheelchairs : { map: function () { return 0 } },
-      active: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true],
-      locations : {}
+      wheelchairs : {},
+      locations : {},
+      active: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
     }
 
-    this.onWheelchairsChanged = this.onWheelchairsChanged.bind(this)
+    this.onWheelchairsLoaded = this.onWheelchairsLoaded.bind(this)
     this.renderButtons = this.renderButtons.bind(this)
+    this.combineMarkers = this.combineMarkers.bind(this)
   }
 
   componentDidMount() {
     let wheelchairRef = firebase.database().ref('/wheelchairs/');
-    wheelchairRef.on('value', this.onWheelchairsChanged.bind(this))
+    wheelchairRef.on('value', this.onWheelchairsLoaded.bind(this))
   }
 
-  onWheelchairsChanged(snapshot) {
-    let wheelchairs = {}
-    for (var wheelchair in snapshot.val()) {
-      wheelchairs[wheelchair] = snapshot.val()[wheelchair]
-    }
-
+  combineMarkers(wheelchairs) {
     let markers = {}
     for (var i in wheelchairs) {
       let locationIndex = wheelchairs[i]['latitude'].toString() + wheelchairs[i]['longitude'].toString()
@@ -62,38 +58,33 @@ export default class Map extends Component {
         markers[locationIndex]['chairs'] = markers[locationIndex]['chairs'].toString() + ', ' + i
       }
     }
-    this.setState({
-      wheelchairs: snapshot.val(),
-      locations: markers
-    })
-  }
-  onButtonPress(buttonValue) {
-    console.log(buttonValue)
+
+    return markers;
   }
 
-  // renderButtons() {
-  //   let views = wheelchairs.map((row, index) => {
-  //     let inputRow = row.map((buttonValue, columnIndex) => {
-  //       return <button
-  //                 type='input'
-  //                 className='btn btn-primary btn-xl'
-  //                 value={buttonValue}
-  //                 onClick={this.onButtonPress.bind(this, buttonValue)}
-  //                 key={'button-' + columnIndex}
-  //               >
-  //                 {buttonValue}
-  //               </button>
-  //     });
-  //     return <div className='btn-group mr-2' key={'row-' + index}>{inputRow}</div>
-  //   });
-  //   return <div className='bt-toolbar'> {views} </div>;
-  // }
+  onWheelchairsLoaded(snapshot) {
+    let wheelchairs = {}
+    for (var wheelchair in snapshot.val()) {
+      wheelchairs[wheelchair] = snapshot.val()[wheelchair]
+    }
+
+    this.setState({
+      wheelchairs: snapshot.val(),
+      locations: this.combineMarkers(wheelchairs)
+    })
+  }
+  
+  onButtonPress(buttonValue) {
+    let temp = this.state.active;
+    temp[buttonValue] = !temp[buttonValue]
+    this.setState({
+      active: [...temp]
+    })
+  }
 
   renderButtons() {
     let views = wheelchairs.map((row, index) => {
       let inputRow = row.map((buttonValue, columnIndex) => {
-        
-
         return <div className={styles.wheelchairButton} key={'button-' + columnIndex} onClick={this.onButtonPress.bind(this, buttonValue)}>{buttonValue}</div>
       })
       return <div className={styles.buttonContainer} key={'row-' + index}>{inputRow}</div>
@@ -102,7 +93,7 @@ export default class Map extends Component {
   }
 
   render () {
-    console.log(this.state.active)
+    console.log('woot', this.state)
     if(this.state.locations != null) {  
       const MapWithAMarker = compose(
         withScriptjs,
@@ -135,7 +126,7 @@ export default class Map extends Component {
             // style={{float: `right`}}
             googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${mapAPIKey}`}
             loadingElement={<div style={{ height: `100%` }} />}
-            containerElement={<div style={{ height: `800px` }} />}
+            containerElement={<div style={{ height: `600px` }} />}
             mapElement={<div style={{ height: `100%` }} />}
           />
         </div>

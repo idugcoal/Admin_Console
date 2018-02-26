@@ -25,7 +25,7 @@
 .TableType {
   background-color: white;
 }
-input {
+.Search {
   float: right;
 }
 .evenRow,
@@ -52,7 +52,8 @@ input {
 }
 .headerCell {
   font-weight: bold;
-  border-right: 1px solid #e0e0e0;
+  border: 1px solid #e0e0e0;
+  background-color: rgb(207, 226, 233);
 }
 .centeredCell {
   align-items: center;
@@ -68,11 +69,11 @@ input {
 
 }
 .stops {
-  background-color: pink;
-  font-size: 1em;
-  line-height: .75em;
+  /*background-color: pink;*/
+  font-size: .75em;
+  line-height: 1em;
   text-align: none;
-  justify-content: left;
+  /*justify-content: left;*/
 }
 .noCells {
   position: absolute;
@@ -85,5 +86,11 @@ input {
   justify-content: center;
   font-size: 1em;
   color: #bdbdbd;
+}
+
+.btn {
+  background-color: #ffffff;
+  border: 2px black solid;
+  /*padding: 10px 20px;*/
 }
 
