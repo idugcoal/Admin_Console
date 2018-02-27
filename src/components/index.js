@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import 'bootstrap/dist/css/bootstrap.css'
+// import 'bootstrap/dist/css/bootstrap.css'
 import { Route, BrowserRouter, Link, Redirect, Switch } from 'react-router-dom'
 import Login from './Login'
 import Register from './Register'
@@ -10,6 +10,8 @@ import Map from './protected/Map'
 import { logout } from '../helpers/auth'
 import { firebaseAuth } from '../config/constants'
 import styles from '../styles/index.css'
+import Header from '../styledComponents/Header';
+import Wrapper from '../styledComponents/Wrapper'
 
 function PrivateRoute ({component: Component, authed, ...rest}) {
   return (
@@ -59,33 +61,10 @@ export default class App extends Component {
   render() {
     return this.state.loading === true ? <h1>Loading</h1> : (
       <BrowserRouter>
-        <div>
-          <header className={styles.siteHeader}>
-            <Link to="/" className={styles.logo}>Sierra Aviation Group</Link>
-            <nav className={styles.siteNav}>
-              <ul>
-                <li><Link to="/" className={styles.a}>Home</Link></li>
-                <li><Link to="/map" className={styles.a}>Wheelchair Map</Link></li>
-                <li><Link to="/table" className={styles.a}>Table</Link></li>
-              </ul>
-            </nav>
-            <div className={styles.accountActions}>
-              <ul>
-                  <li>
-                      {this.state.authed
-                        ? <Link to="/"
-                            onClick={() => {
-                              logout()
-                            }}
-                            className={styles.a}>Logout</Link>
-                        : <span>
-                            <Link to="/login" className="navbar-brand">Login</Link>
-                            <Link to="/register" className="navbar-brand">Register</Link>
-                          </span>}
-                    </li>
-                </ul>
-              </div>
-          </header>
+        <Wrapper>
+          <Header>
+            Sierra Aviation Group
+          </Header>
           <div className={styles.container}>
             <div className={styles.row}>
               <Switch>
@@ -99,7 +78,7 @@ export default class App extends Component {
               </Switch>
             </div>
           </div>
-        </div>
+        </Wrapper>
       </BrowserRouter>
     );
   }
