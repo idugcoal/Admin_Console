@@ -6,6 +6,8 @@
   background-color: #3b3b3b;
 }*/
 
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
 .container {
 	width: 90%;
 	margin: auto;
@@ -35,7 +37,7 @@
   letter-spacing: 3px; 
 }
 
-.siteNav ul {
+/*.siteNav ul {
   list-style: none;
   display: flex;
   margin: 0;
@@ -48,7 +50,7 @@
   color: #fff;
   padding: 20px;
   display: inline-block;
-}
+}*/
 
 .accountActions {
   margin-left: auto;

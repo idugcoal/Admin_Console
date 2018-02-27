@@ -12,6 +12,7 @@ import { firebaseAuth } from '../config/constants'
 import styles from '../styles/index.css'
 import Header from '../styledComponents/Header';
 import Wrapper from '../styledComponents/Wrapper'
+import Nav from '../styledComponents/Nav'
 
 function PrivateRoute ({component: Component, authed, ...rest}) {
   return (
@@ -63,7 +64,29 @@ export default class App extends Component {
       <BrowserRouter>
         <Wrapper>
           <Header>
-            Sierra Aviation Group
+            <Link to="/" className={styles.logo}>Sierra Aviation Group</Link>
+                <Nav>
+                  <ul>
+                    <li><Link to="/map">Wheelchair Map</Link></li>
+                    <li><Link to="/table">Table</Link></li>
+                  </ul>
+                </Nav>
+                <div className={styles.accountActions}>
+                <ul>
+                  <li>
+                    {this.state.authed
+                      ? <Link to="/"
+                          onClick={() => {
+                            logout()
+                          }}
+                          className={styles.a}>Logout</Link>
+                      : <span>
+                          <Link to="/login" className="navbar-brand">Login</Link>
+                          <Link to="/register" className="navbar-brand">Register</Link>
+                        </span>}
+                    </li>
+                </ul>
+      </div>
           </Header>
           <div className={styles.container}>
             <div className={styles.row}>

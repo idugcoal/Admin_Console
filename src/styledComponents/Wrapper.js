@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const StyledWrapper = styled.div`
   @import url(https://fonts.googleapis.com/css?family=Roboto:300);
   display: grid;
-  grid-template-columns: 40px 1fr 40px;
+  grid-template-columns: 1fr;
   grid-column-gap: 10px;
   margin: 0;
   padding: 0;

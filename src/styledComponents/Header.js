@@ -12,7 +12,7 @@ const StyledHeader = styled.div`
   padding: 10px;
   text-transform: uppercase;
   font-family: "Roboto", sans-serif;
-  background-color: #222;
+  background-color: rgba(60, 60, 60, 0.5);
   color: white;
 `;
 
