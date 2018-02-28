@@ -93,7 +93,6 @@ export default class Map extends Component {
   }
 
   render () {
-    console.log('woot', this.state)
     if(this.state.locations != null) {  
       const MapWithAMarker = compose(
         withScriptjs,
@@ -118,12 +117,13 @@ export default class Map extends Component {
       );
       return (
         <div>
-          <div className={styles.leftPanel} >
+          <div className={styles.wheelchairButtons} >
             <div className={styles.title}>Wheelchairs</div>
             {this.renderButtons()}
           </div>
           <MapWithAMarker
             // style={{float: `right`}}
+            className={styles.map}
             googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${mapAPIKey}`}
             loadingElement={<div style={{ height: `100%` }} />}
             containerElement={<div style={{ height: `600px` }} />}
