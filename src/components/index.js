@@ -13,6 +13,8 @@ import styles from '../styles/index.css'
 import Header from '../styledComponents/Header';
 import Wrapper from '../styledComponents/Wrapper'
 import Nav from '../styledComponents/Nav'
+import Content from '../styledComponents/Content'
+
 
 function PrivateRoute ({component: Component, authed, ...rest}) {
   return (
@@ -64,43 +66,36 @@ export default class App extends Component {
       <BrowserRouter>
         <Wrapper>
           <Header>
+            <Nav>
+              <ul>
             <Link to="/" className={styles.logo}>Sierra Aviation Group</Link>
-                <Nav>
-                  <ul>
-                    <li><Link to="/map">Wheelchair Map</Link></li>
-                    <li><Link to="/table">Table</Link></li>
-                  </ul>
-                </Nav>
-                <div className={styles.accountActions}>
-                <ul>
-                  <li>
-                    {this.state.authed
-                      ? <Link to="/"
-                          onClick={() => {
-                            logout()
-                          }}
-                          className={styles.a}>Logout</Link>
-                      : <span>
-                          <Link to="/login" className="navbar-brand">Login</Link>
-                          <Link to="/register" className="navbar-brand">Register</Link>
-                        </span>}
-                    </li>
-                </ul>
-      </div>
+                <li><Link to="/table">Table</Link></li>
+                <li><Link to="/map">Wheelchair Map</Link></li>
+                <li>
+                  {this.state.authed
+                    ? <Link to="/"
+                        onClick={() => {
+                          logout()
+                        }}
+                        className={styles.a}>Logout</Link>
+                    : <span>
+                        <Link to="/login" className="navbar-brand">Login</Link>
+                        <Link to="/register" className="navbar-brand">Register</Link>
+                      </span>}
+                  </li>
+              </ul>
+            </Nav>
           </Header>
-          <div className={styles.container}>
-            <div className={styles.row}>
+          <Content>
               <Switch>
                 <Route path='/' exact component={Home} />
                 <PublicRoute authed={this.state.authed} path='/login' component={Login} />
                 <PublicRoute authed={this.state.authed} path='/register' component={Register} />
-                <PrivateRoute authed={this.state.authed} path='/dashboard' component={Dashboard} />
                 <PrivateRoute authed={this.state.authed} path='/table' component={Table} />
                 <PrivateRoute authed={this.state.authed} path='/map' component={Map} />
                 <Route render={() => <h3>No Match</h3>} />
               </Switch>
-            </div>
-          </div>
+            </Content>
         </Wrapper>
       </BrowserRouter>
     );

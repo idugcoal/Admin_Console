@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+/*@import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
 .Main {
   text-align: center;
@@ -72,7 +72,7 @@
 }
 
 body {
-  background: #FFFFFF; /7F3F3F fallback for old browsers */
+  background: #FFFFFF; /7F3F3F fallback for old browsers *
   background: -webkit-linear-gradient(right, #FFFFFF, #FFFFFF);
   background: -moz-linear-gradient(right, #FFFFFF, #FFFFFF);
   background: -o-linear-gradient(right, #FFFFFF, #FFFFFF);
@@ -80,5 +80,5 @@ body {
   font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;      
-}
+}*/
 
