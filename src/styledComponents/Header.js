@@ -6,7 +6,7 @@ const StyledHeader = styled.div`
   display: flex;
   color: #fff;
   grid-area: h;
-  font-size: 18px;
+  font-size: 24px;
   text-transform: uppercase;
   font-family: 'Open Sans', sans-serif;
   background-color: rgba(60, 60, 60, 0.5);
@@ -27,10 +27,9 @@ const StyledHeader = styled.div`
     vertical-align: middle;
     justify-content: center;
     align-items: center;
-    font-size: 14px;
+    font-size: 24px;
     flex-direction: column;
-    height: 80px;
-    line-height: 35px;
+    line-height: 28px;
 }`;
 
 const Header = ({ children }) => (

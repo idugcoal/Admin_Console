@@ -7,10 +7,8 @@ const StyledNav = styled.ul`
   display: flex;
   line-height: 50px;
   vertical-align: middle;
-
-  li > * {
-    letter-spacing: normal;
-  }
+  font-size: 16px;
+  letter-spacing: normal;
 
   a {
     padding-left: 10px;
@@ -20,9 +18,9 @@ const StyledNav = styled.ul`
     display: inline-block;
   }
 
-    @media (max-width: 768px) {
-      li * {
-        padding: 10px;
+  @media (max-width: 768px) {
+    li * {
+      padding: 10px;
   }
 }`;
 

@@ -8,7 +8,6 @@ import {
 } from "react-google-maps";
 import firebase from 'firebase'
 import { mapAPIKey } from '../../config/constants';
-import styles from '../../styles/Map.css';
 
 // const wheelchairs = [
 //   [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -94,7 +93,7 @@ export default class Map extends Component {
   }
 
   render () {
-    console.log('woot', this.state)
+
     if(this.state.locations != null) {  
       const MapWithAMarker = compose(
         withScriptjs,
@@ -102,15 +101,15 @@ export default class Map extends Component {
       )(props =>
         <GoogleMap
           defaultZoom={15}
-          defaultCenter={{ lat: 33.6762, lng: -117.8675 }}
-          // defaultCenter={{ lat: 34.0217574, lng: -118.4045808 }}
+          // defaultCenter={{ lat: 33.6762, lng: -117.8675 }}
+          defaultCenter={{ lat: 34.0217574, lng: -118.4045808 }}
         >
           {Object.keys(this.state.locations).map((marker, index) => {
             return ( 
               <Marker
-                position={{ lat: this.state.locations[marker]['latitude'], lng: this.state.locations[marker]['longitude'] }}
+                position={{ lat: parseFloat(this.state.locations[marker]['latitude']), lng: parseFloat(this.state.locations[marker]['longitude']) }}
                 label={this.state.locations[marker]['chairs'].toString()}
-                key={index}
+                key={this.state.locations[marker]['name']}
               />
             )
           })}
@@ -119,12 +118,8 @@ export default class Map extends Component {
       );
       return (
         <div>
-          <div className={styles.leftPanel} >
-            <div className={styles.title}></div>
             {this.renderButtons()}
-          </div>
           <MapWithAMarker
-            // style={{float: `right`}}
             googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${mapAPIKey}`}
             loadingElement={<div style={{ height: `100%` }} />}
             containerElement={<div style={{ height: `600px` }} />}

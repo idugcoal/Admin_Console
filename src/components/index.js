@@ -33,7 +33,7 @@ function PublicRoute ({component: Component, authed, ...rest}) {
       {...rest}
       render={(props) => authed === false
         ? <Component {...props} />
-        : <Redirect to='/dashboard' />}
+        : <Redirect to='/table' />}
     />
   )
 }
@@ -67,7 +67,7 @@ export default class App extends Component {
       <BrowserRouter>
         <Wrapper>
           <Header>
-            <Link to="/" className={styles.logo}>Sierra Aviation Group</Link>
+            <Link to="/" className={styles.logo}>Sierra Aviation</Link>
             <Nav>
                 <li><Link to="/table">Table</Link></li>
                 <li><Link to="/map">Wheelchair Map</Link></li>
