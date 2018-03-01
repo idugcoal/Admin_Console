@@ -1,19 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const StyledNav = styled.div`
-  ul {
-    list-style: none;
-    display: flex;
-    align-items: center;
-    padding: 0;
+const StyledNav = styled.ul`
+  display: flex;
+  list-style: none;
+  display: flex;
+  padding-left: 10px;
+  line-height: 50px;
+
+  li > a {
+    letter-spacing: normal;
+    padding-left: 20px;
   }
 
   a {
+    padding-left: 10px;
     text-transform: uppercase;
     text-decoration: none;
     color: #fff;
-    padding: 20px;
     display: inline-block;
   }
 `;

@@ -4,7 +4,7 @@ import { Route, BrowserRouter, Link, Redirect, Switch } from 'react-router-dom'
 import Login from './Login'
 import Register from './Register'
 import Home from './Home'
-import Dashboard from './protected/Dashboard'
+// import Dashboard from './protected/Dashboard'
 import Table from './protected/Table'
 import Map from './protected/Map'
 import { logout } from '../helpers/auth'
@@ -61,14 +61,14 @@ export default class App extends Component {
   componentWillUnmount () {
     this.removeListener()
   }
+
   render() {
     return this.state.loading === true ? <h1>Loading</h1> : (
       <BrowserRouter>
         <Wrapper>
           <Header>
+              <Link to="/" className={styles.logo}>Sierra Aviation Group</Link>
             <Nav>
-              <ul>
-            <Link to="/" className={styles.logo}>Sierra Aviation Group</Link>
                 <li><Link to="/table">Table</Link></li>
                 <li><Link to="/map">Wheelchair Map</Link></li>
                 <li>
@@ -83,7 +83,6 @@ export default class App extends Component {
                         <Link to="/register" className="navbar-brand">Register</Link>
                       </span>}
                   </li>
-              </ul>
             </Nav>
           </Header>
           <Content>
