@@ -9,13 +9,14 @@ const StyledHeader = styled.div`
   font-size: 24px;
   text-transform: uppercase;
   font-family: 'Open Sans', sans-serif;
-  background-color: rgba(60, 60, 60, 0.5);
+  background-color: rgba(60,60,60,0.5);
   color: white;
   line-height: 50px;
   letter-spacing: 3px;
   padding-right: 10px;
   padding-left: 10px;
   justify-content: space-between;
+  box-shadow: 0px 0px 14px 0px rgba(0,0,0,0.75);
   
   a: first-child {
     text-decoration: none;

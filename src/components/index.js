@@ -9,7 +9,7 @@ import Table from './protected/Table'
 import Map from './protected/Map'
 import { logout } from '../helpers/auth'
 import { firebaseAuth } from '../config/constants'
-import styles from '../styles/index.css'
+// import styles from '../styles/index.css'
 import Header from '../styledComponents/Header';
 import Wrapper from '../styledComponents/Wrapper'
 import Nav from '../styledComponents/Nav'
@@ -67,7 +67,7 @@ export default class App extends Component {
       <BrowserRouter>
         <Wrapper>
           <Header>
-            <Link to="/" className={styles.logo}>Sierra Aviation</Link>
+            <Link to="/">Sierra Aviation</Link>
             <Nav>
                 <li><Link to="/table">Table</Link></li>
                 <li><Link to="/map">Wheelchair Map</Link></li>
@@ -77,10 +77,10 @@ export default class App extends Component {
                         onClick={() => {
                           logout()
                         }}
-                        className={styles.a}>Logout</Link>
+                        >Logout</Link>
                     : <span>
-                        <Link to="/login" className="navbar-brand">Login</Link>
-                        <Link to="/register" className="navbar-brand">Register</Link>
+                        <Link to="/login">Login</Link>
+                        <Link to="/register">Register</Link>
                       </span>}
                   </li>
             </Nav>
