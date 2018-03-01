@@ -118,7 +118,7 @@ export default class Map extends Component {
       return (
         <div>
           <div className={styles.wheelchairButtons} >
-            <div className={styles.title}>Wheelchairs</div>
+            Wheelchairs
             {this.renderButtons()}
           </div>
           <MapWithAMarker

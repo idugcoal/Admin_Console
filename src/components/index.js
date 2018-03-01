@@ -87,17 +87,15 @@ export default class App extends Component {
               </div>
           </header>
           <div className={styles.container}>
-            <div className={styles.row}>
-              <Switch>
-                <Route path='/' exact component={Home} />
-                <PublicRoute authed={this.state.authed} path='/login' component={Login} />
-                <PublicRoute authed={this.state.authed} path='/register' component={Register} />
-                <PrivateRoute authed={this.state.authed} path='/dashboard' component={Dashboard} />
-                <PrivateRoute authed={this.state.authed} path='/table' component={Table} />
-                <PrivateRoute authed={this.state.authed} path='/map' component={Map} />
-                <Route render={() => <h3>No Match</h3>} />
-              </Switch>
-            </div>
+            <Switch>
+              <Route path='/' exact component={Home} />
+              <PublicRoute authed={this.state.authed} path='/login' component={Login} />
+              <PublicRoute authed={this.state.authed} path='/register' component={Register} />
+              <PrivateRoute authed={this.state.authed} path='/dashboard' component={Dashboard} />
+              <PrivateRoute authed={this.state.authed} path='/table' component={Table} />
+              <PrivateRoute authed={this.state.authed} path='/map' component={Map} />
+              <Route render={() => <h3>No Match</h3>} />
+            </Switch>
           </div>
         </div>
       </BrowserRouter>
