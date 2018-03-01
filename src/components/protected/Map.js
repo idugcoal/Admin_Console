@@ -8,6 +8,9 @@ import {
 } from "react-google-maps";
 import firebase from 'firebase'
 import { mapAPIKey } from '../../config/constants';
+import Wheelchairs from '../../styledComponents/Wheelchairs';
+import MarkerMap from '../../styledComponents/MarkerMap';
+
 
 // const wheelchairs = [
 //   [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -106,41 +109,46 @@ export default class Map extends Component {
 
   render () {
     console.log(this.state.locations)
-    if(this.state.locations[0] !== 'false') {  
+    if(this.state.locations[0] !== 'false') {
       const MapWithAMarker = compose(
-        withScriptjs,
-        withGoogleMap
-      )(props =>
-        <GoogleMap
-          defaultZoom={15}
-          // defaultCenter={{ lat: 33.6762, lng: -117.8675 }}
-          defaultCenter={{ lat: 34.0217574, lng: -118.4045808 }}
-        >
-          {Object.keys(this.state.locations).map((marker, index) => {
-            return ( 
-              <Marker
-                position={{ lat: parseFloat(this.state.locations[marker]['latitude']), lng: parseFloat(this.state.locations[marker]['longitude']) }}
-                label={this.state.locations[marker]['chairs'].toString()}
-                key={this.state.locations[marker]['name']}
-              />
-            )
-          })}
-        </GoogleMap>
+              withScriptjs,
+              withGoogleMap
+            )(props =>
+              
+              <GoogleMap
+                defaultZoom={15}
+                // defaultCenter={{ lat: 33.6762, lng: -117.8675 }}
+                defaultCenter={{ lat: 34.0217574, lng: -118.4045808 }}
+              >
+                {Object.keys(this.state.locations).map((marker, index) => {
+                  return ( 
+                    <Marker
+                      position={{ lat: parseFloat(this.state.locations[marker]['latitude']), lng: parseFloat(this.state.locations[marker]['longitude']) }}
+                      label={this.state.locations[marker]['chairs'].toString()}
+                      key={this.state.locations[marker]['name']}
+                    />
+                  )
+                })}
+              </GoogleMap>
 
-      );
-      return (
-        <div>
-            {this.renderButtons()}
-          <MapWithAMarker
-            googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${mapAPIKey}`}
-            loadingElement={<div style={{ height: `100%` }} />}
-            containerElement={<div style={{ height: `600px` }} />}
-            mapElement={<div style={{ height: `100%` }} />}
-          />
-        </div>
-      )
-    } else {
-      return <div />
-    }
+            );
+            return (
+              <div>
+                <MarkerMap> 
+                  <MapWithAMarker
+                    googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${mapAPIKey}`}
+                    loadingElement={<div style={{ height: `100%` }} />}
+                    containerElement={<div style={{ height: `600px` }} />}
+                    mapElement={<div style={{ height: `100%` }} />}
+                  />
+                </MarkerMap>
+                <Wheelchairs>
+                  {this.renderButtons()}
+                </Wheelchairs>
+              </div>
+            )
+          } else {
+            return <div />
+          }
   }
 }
