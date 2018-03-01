@@ -8,7 +8,7 @@ const StyledNav = styled.ul`
   line-height: 50px;
   vertical-align: middle;
 
-  li > a {
+  li > * {
     letter-spacing: normal;
   }
 
@@ -21,7 +21,7 @@ const StyledNav = styled.ul`
   }
 
     @media (max-width: 768px) {
-      li > a {
+      li * {
         padding: 10px;
   }
 }`;

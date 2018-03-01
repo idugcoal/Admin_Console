@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const StyledContent = styled.div`
   font-size: 14px;
-  grid-area: ". buttons . map .";
+  grid-area: c;
   padding: 10px;
   font-family: "Roboto", sans-serif;
   color: #000;

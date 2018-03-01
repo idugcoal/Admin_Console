@@ -5,7 +5,7 @@ const StyledHeader = styled.div`
   background-color: #1D1F20;
   display: flex;
   color: #fff;
-  grid-area: header;
+  grid-area: h;
   font-size: 18px;
   text-transform: uppercase;
   font-family: 'Open Sans', sans-serif;
