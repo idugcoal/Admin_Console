@@ -29,18 +29,25 @@ export default class Map extends Component {
     
     this.state = {
       wheelchairs : {},
-      locations : {},
+      locations : { '0': 'false'},
       active: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
     }
 
     this.onWheelchairsLoaded = this.onWheelchairsLoaded.bind(this)
     this.renderButtons = this.renderButtons.bind(this)
     this.combineMarkers = this.combineMarkers.bind(this)
+    this.renderMarkers = this.renderMarkers.bind(this)
   }
 
   componentDidMount() {
     let wheelchairRef = firebase.database().ref('/wheelchairs/');
     wheelchairRef.on('value', this.onWheelchairsLoaded.bind(this))
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    // return this.state.active === nextState.active;
+    // return this.state.locations === nextState.locations;
+    return true
   }
 
   combineMarkers(wheelchairs) {
@@ -92,9 +99,14 @@ export default class Map extends Component {
     console.log('100 buttons')
   }
 
-  render () {
+  renderMarkers() {
+    console.log('render markers')
+    
+  }
 
-    if(this.state.locations != null) {  
+  render () {
+    console.log(this.state.locations)
+    if(this.state.locations[0] !== 'false') {  
       const MapWithAMarker = compose(
         withScriptjs,
         withGoogleMap
@@ -127,6 +139,8 @@ export default class Map extends Component {
           />
         </div>
       )
+    } else {
+      return <div />
     }
   }
 }
