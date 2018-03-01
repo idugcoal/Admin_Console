@@ -67,7 +67,7 @@ export default class App extends Component {
       <BrowserRouter>
         <Wrapper>
           <Header>
-              <Link to="/" className={styles.logo}>Sierra Aviation Group</Link>
+            <Link to="/" className={styles.logo}>Sierra Aviation Group</Link>
             <Nav>
                 <li><Link to="/table">Table</Link></li>
                 <li><Link to="/map">Wheelchair Map</Link></li>

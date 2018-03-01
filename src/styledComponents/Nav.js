@@ -5,12 +5,11 @@ const StyledNav = styled.ul`
   display: flex;
   list-style: none;
   display: flex;
-  padding-left: 10px;
   line-height: 50px;
+  vertical-align: middle;
 
   li > a {
     letter-spacing: normal;
-    padding-left: 20px;
   }
 
   a {
@@ -20,7 +19,12 @@ const StyledNav = styled.ul`
     color: #fff;
     display: inline-block;
   }
-`;
+
+    @media (max-width: 768px) {
+      li > a {
+        padding: 10px;
+  }
+}`;
 
 const Nav = ({ children }) => (
   <StyledNav > {children} </StyledNav>

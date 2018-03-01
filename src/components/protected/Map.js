@@ -120,7 +120,7 @@ export default class Map extends Component {
       return (
         <div>
           <div className={styles.leftPanel} >
-            <div className={styles.title}>Wheelchairs</div>
+            <div className={styles.title}></div>
             {this.renderButtons()}
           </div>
           <MapWithAMarker
