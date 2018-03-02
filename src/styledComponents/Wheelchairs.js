@@ -7,8 +7,12 @@ const StyledWheelchairs = styled.div`
   font-family: "Roboto", sans-serif;
   color: #000;
   grid-area: w;
-  background-color: pink;
   display: flex;
+  margin: 10px;
+  background-color: papayawhip;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
 `;
 
 const Wheelchairs = ({ children }) => (

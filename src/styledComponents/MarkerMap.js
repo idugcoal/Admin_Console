@@ -7,7 +7,6 @@ const StyledMarkerMap = styled.div`
   font-family: "Roboto", sans-serif;
   color: #000;
   grid-area: m;
-  background-color: purple;
 `;
 
 const MarkerMap = ({ children }) => (

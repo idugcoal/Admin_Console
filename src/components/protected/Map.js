@@ -7,23 +7,13 @@ import {
   Marker,
 } from "react-google-maps";
 import firebase from 'firebase'
-import { mapAPIKey } from '../../config/constants';
+import { mapAPIKey, wheelchairs } from '../../config/constants';
 import Wheelchairs from '../../styledComponents/Wheelchairs';
+import WheelchairButton from '../../styledComponents/WheelchairButton';
 import MarkerMap from '../../styledComponents/MarkerMap';
+import MapContainer from '../../styledComponents/MapContainer';
 
 
-// const wheelchairs = [
-//   [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-//   [11, 12, 13, 14, 15, 16, 17, 18, 19, 20],                                                                                                                                                         
-//   [21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
-//   [31, 32, 33, 34, 35, 36, 37, 38, 39, 40],
-//   [41, 42, 43, 44, 45, 46, 47, 48, 49, 50],
-//   [51, 52, 53, 54, 55, 56, 57, 58, 59, 60],
-//   [61, 62, 63, 64, 65, 66, 67, 68, 69, 70],
-//   [71, 72, 73, 74, 75, 76, 77, 78, 79, 80],
-//   [81, 82, 83, 84, 85, 86, 87, 88, 89, 90],
-//   [91, 92, 93, 94, 95, 96, 97, 98, 99, 100]
-// ];
 
 export default class Map extends Component {
 
@@ -37,20 +27,13 @@ export default class Map extends Component {
     }
 
     this.onWheelchairsLoaded = this.onWheelchairsLoaded.bind(this)
-    this.renderButtons = this.renderButtons.bind(this)
     this.combineMarkers = this.combineMarkers.bind(this)
-    this.renderMarkers = this.renderMarkers.bind(this)
+    this.onButtonPress = this.onButtonPress.bind(this)
   }
 
   componentDidMount() {
     let wheelchairRef = firebase.database().ref('/wheelchairs/');
     wheelchairRef.on('value', this.onWheelchairsLoaded.bind(this))
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    // return this.state.active === nextState.active;
-    // return this.state.locations === nextState.locations;
-    return true
   }
 
   combineMarkers(wheelchairs) {
@@ -63,8 +46,10 @@ export default class Map extends Component {
         markers[locationIndex]['longitude'] = wheelchairs[i]['longitude']
         markers[locationIndex]['chairs'] = i.toString()
         markers[locationIndex]['name'] = locationIndex
+        markers[locationIndex]['chairsArray'] = [i]
       } else {
         markers[locationIndex]['chairs'] = markers[locationIndex]['chairs'].toString() + ', ' + i
+        markers[locationIndex]['chairsArray'].push(i)
       }
     }
 
@@ -83,51 +68,53 @@ export default class Map extends Component {
     })
   }
   
-  onButtonPress(buttonValue) {
-    let temp = this.state.active;
-    temp[buttonValue] = !temp[buttonValue]
+  onButtonPress(e) {
+
+    let value = e.target.innerHTML
+    let temp = [...this.state.active]
+
+    temp[value] = !temp[value]
+    
     this.setState({
-      active: [...temp]
+      active: temp
     })
   }
 
-  renderButtons() {
-    // let views = wheelchairs.map((row, index) => {
-    //   let inputRow = row.map((buttonValue, columnIndex) => {
-    //     return <div className={styles.wheelchairButton} key={'button-' + columnIndex} onClick={this.onButtonPress.bind(this, buttonValue)}>{buttonValue}</div>
-    //   })
-    //   return <div className={styles.buttonContainer} key={'row-' + index}>{inputRow}</div>
-    // })
-    // return views
-    console.log('100 buttons')
-  }
-
-  renderMarkers() {
-    console.log('render markers')
-    
-  }
-
   render () {
-    console.log(this.state.locations)
+    const buttonList = wheelchairs.map((number, index) => (
+      <WheelchairButton 
+        key={number}
+        onClick={this.onButtonPress}
+        >
+        {number}
+      </WheelchairButton>
+    ))
+
     if(this.state.locations[0] !== 'false') {
       const MapWithAMarker = compose(
               withScriptjs,
               withGoogleMap
             )(props =>
-              
               <GoogleMap
                 defaultZoom={15}
-                // defaultCenter={{ lat: 33.6762, lng: -117.8675 }}
-                defaultCenter={{ lat: 34.0217574, lng: -118.4045808 }}
+                defaultCenter={{ lat: 33.6762, lng: -117.8675 }}
+                // defaultCenter={{ lat: 34.0217574, lng: -118.4045808 }}
               >
                 {Object.keys(this.state.locations).map((marker, index) => {
-                  return ( 
-                    <Marker
-                      position={{ lat: parseFloat(this.state.locations[marker]['latitude']), lng: parseFloat(this.state.locations[marker]['longitude']) }}
-                      label={this.state.locations[marker]['chairs'].toString()}
-                      key={this.state.locations[marker]['name']}
-                    />
-                  )
+                  for(let chair of this.state.locations[marker]['chairsArray']) {
+                    if(this.state.active[chair]) {
+                      return ( 
+                        <Marker
+                          position={{ lat: parseFloat(this.state.locations[marker]['latitude']), lng: parseFloat(this.state.locations[marker]['longitude']) }}
+                          label={this.state.locations[marker]['chairs'].toString()}
+                          key={this.state.locations[marker]['name']}
+                        />
+                      )
+                    } else {
+                      return <div key={this.state.locations[marker]['name']}/>
+                    }
+                  }
+                  return 0;
                 })}
               </GoogleMap>
 
@@ -137,13 +124,13 @@ export default class Map extends Component {
                 <MarkerMap> 
                   <MapWithAMarker
                     googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${mapAPIKey}`}
-                    loadingElement={<div style={{ height: `100%` }} />}
-                    containerElement={<div style={{ height: `600px` }} />}
+                    loadingElement={<MapContainer />}
+                    containerElement={<MapContainer />}
                     mapElement={<div style={{ height: `100%` }} />}
                   />
                 </MarkerMap>
                 <Wheelchairs>
-                  {this.renderButtons()}
+                  {buttonList}
                 </Wheelchairs>
               </div>
             )
