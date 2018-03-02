@@ -9,7 +9,6 @@ const StyledWheelchairs = styled.div`
   grid-area: w;
   display: flex;
   margin: 10px;
-  background-color: papayawhip;
   flex-direction: row;
   justify-content: flex-start;
   flex-wrap: wrap;

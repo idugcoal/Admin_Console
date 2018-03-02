@@ -15,8 +15,6 @@ const StyledWheelchairButton = styled.button`
     width: 24px;
 `;
 
-
-
 const WheelchairButton = ({ children, onClick }) => (
   <StyledWheelchairButton
     onClick={onClick}

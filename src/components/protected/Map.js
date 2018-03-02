@@ -1,18 +1,12 @@
 import React, { Component } from 'react'
 import { compose } from 'recompose';
-import {
-  withScriptjs,
-  withGoogleMap,
-  GoogleMap,
-  Marker,
-} from "react-google-maps";
+import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
 import firebase from 'firebase'
-import { mapAPIKey, wheelchairs } from '../../config/constants';
+import { mapAPIKey, wheelchairs, active } from '../../config/constants';
 import Wheelchairs from '../../styledComponents/Wheelchairs';
 import WheelchairButton from '../../styledComponents/WheelchairButton';
 import MarkerMap from '../../styledComponents/MarkerMap';
 import MapContainer from '../../styledComponents/MapContainer';
-
 
 
 export default class Map extends Component {
@@ -23,7 +17,7 @@ export default class Map extends Component {
     this.state = {
       wheelchairs : {},
       locations : { '0': 'false'},
-      active: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+      active: active
     }
 
     this.onWheelchairsLoaded = this.onWheelchairsLoaded.bind(this)
