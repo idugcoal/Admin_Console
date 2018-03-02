@@ -83,7 +83,6 @@ export default class Map extends Component {
         {number}
       </WheelchairButton>
     ))
-
     if(this.state.locations[0] !== 'false') {
       const MapWithAMarker = compose(
               withScriptjs,
