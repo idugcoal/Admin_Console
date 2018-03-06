@@ -5,9 +5,13 @@ const StyledFunctionButton = styled.button`
   font-size: 24px;
   font-family: "Roboto", sans-serif;
   color: #FFF;
-  background-color: rgba(30,30,30,0.3);
+  background-color: rgba(30,30,30,0.8);
   height: 48px;
   width: 300px;
+  cursor: pointer;
+  :active { 
+    background-color: rgba(30,30,30,0.3);
+  }
 
   @media (max-width: 1024px) {
   font-size: 20px;
