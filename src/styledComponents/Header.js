@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components'
 
 const StyledHeader = styled.div`
-  background-color: #1D1F20;
   display: flex;
   color: #fff;
   grid-area: h;

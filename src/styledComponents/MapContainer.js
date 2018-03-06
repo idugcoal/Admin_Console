@@ -6,7 +6,7 @@ const StyledMapContainer = styled.div`
   height: 600px;
 
   @media (max-width: 768px) {
-    height: 300px;
+    height: 250px;
   }
 `;
 

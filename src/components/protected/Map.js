@@ -82,7 +82,6 @@ export default class Map extends Component {
   onButtonPress(e) {
     let value = e.target.innerHTML
     let temp = [...this.state.active]
-    
     temp[value] = !temp[value]
     this.setState({
       active: temp
@@ -96,7 +95,7 @@ export default class Map extends Component {
       <WheelchairButton 
         key={number}
         onClick={this.onButtonPress}
-        active={this.state.active[index]}
+        color={this.state.active[number] ? '#7AEF8E' : '#F37CB8'}
         >
         {number}
       </WheelchairButton>
