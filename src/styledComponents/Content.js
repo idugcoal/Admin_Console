@@ -8,10 +8,11 @@ const StyledContent = styled.div`
   display: grid;
   font-family: "Roboto", sans-serif;
   color: #000;
-  grid-template-rows: 600px auto;
+  grid-template-rows: 600px auto auto;
   grid-template-areas: 
     "m"
-    "w";
+    "w"
+    "f";
   @media (max-width: 768px) {
     grid-template-rows: 300px auto;
   }

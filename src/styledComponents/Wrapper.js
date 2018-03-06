@@ -14,7 +14,7 @@ const StyledWrapper = styled.div`
     "c c c c c";
 
   @media (max-width: 768px) {
-    grid-template-rows: 80px auto;
+    grid-template-rows: 48px auto;
     grid-template-areas: 
     "h h h h h"
     "c c c c c"

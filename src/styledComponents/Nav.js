@@ -19,6 +19,7 @@ const StyledNav = styled.ul`
   }
 
   @media (max-width: 768px) {
+    line-height: 16px;
     li * {
       padding: 10px;
   }

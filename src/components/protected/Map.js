@@ -4,7 +4,9 @@ import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-map
 import firebase from 'firebase'
 import { mapAPIKey, wheelchairs, active } from '../../config/constants';
 import Wheelchairs from '../../styledComponents/Wheelchairs';
+import Functions from '../../styledComponents/Functions';
 import WheelchairButton from '../../styledComponents/WheelchairButton';
+import FunctionButton from '../../styledComponents/FunctionButton';
 import MarkerMap from '../../styledComponents/MarkerMap';
 import MapContainer from '../../styledComponents/MapContainer';
 
@@ -23,6 +25,7 @@ export default class Map extends Component {
     this.onWheelchairsLoaded = this.onWheelchairsLoaded.bind(this)
     this.combineMarkers = this.combineMarkers.bind(this)
     this.onButtonPress = this.onButtonPress.bind(this)
+    this.toggle = this.toggle.bind(this)
   }
 
   componentDidMount() {
@@ -62,23 +65,38 @@ export default class Map extends Component {
     })
   }
   
-  onButtonPress(e) {
-
-    let value = e.target.innerHTML
-    let temp = [...this.state.active]
-
-    temp[value] = !temp[value]
-    
+  toggle(value) {
+    let temp = [...this.state.active];
+    for (let i in temp) {
+      if (value === 'toggle') {
+        temp[i] = !temp[i];
+      } else {
+        temp[i] = value;
+      }
+    }
     this.setState({
       active: temp
     })
   }
+
+  onButtonPress(e) {
+    let value = e.target.innerHTML
+    let temp = [...this.state.active]
+    
+    temp[value] = !temp[value]
+    this.setState({
+      active: temp
+    })
+  }
+
+
 
   render () {
     const buttonList = wheelchairs.map((number, index) => (
       <WheelchairButton 
         key={number}
         onClick={this.onButtonPress}
+        active={this.state.active[index]}
         >
         {number}
       </WheelchairButton>
@@ -125,6 +143,26 @@ export default class Map extends Component {
                 <Wheelchairs>
                   {buttonList}
                 </Wheelchairs>
+                <Functions>
+                  <FunctionButton 
+                    key={'on'}
+                    onClick={() => this.toggle(true)}
+                    >
+                    {'Show All Wheelchairs'}
+                  </FunctionButton>
+                  <FunctionButton 
+                    key={'toggle'}
+                    onClick={() => this.toggle('toggle')}
+                    >
+                    {'Toggle Wheelchairs'}
+                  </FunctionButton>
+                  <FunctionButton 
+                    key={'off'}
+                    onClick={() => this.toggle(false)}
+                    >
+                    {'Hide All Wheelchairs'}
+                  </FunctionButton>
+                </Functions>
               </div>
             )
           } else {

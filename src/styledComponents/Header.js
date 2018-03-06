@@ -28,9 +28,9 @@ const StyledHeader = styled.div`
     vertical-align: middle;
     justify-content: center;
     align-items: center;
-    font-size: 24px;
+    font-size: 20px;
     flex-direction: column;
-    line-height: 28px;
+    line-height: 20px;
 }`;
 
 const Header = ({ children }) => (
