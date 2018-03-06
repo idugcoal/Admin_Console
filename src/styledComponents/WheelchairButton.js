@@ -2,12 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 
 const StyledWheelchairButton = styled.button`
-  font-size: 24px;
+  font-size: 20px;
   font-family: "Roboto", sans-serif;
-  color: #000;
+  color: #FFF;
+  background-color: rgba(30,30,30,0.3);
   height: 40px;
   width: 40px;
-  border-radius: 2px;
 
   @media (max-width: 1024px) {
   font-size: 16px;
@@ -22,7 +22,8 @@ const StyledWheelchairButton = styled.button`
   }
 `;
 
-const WheelchairButton = ({ children, onClick }) => (
+const WheelchairButton = ({ children, onClick, color }) => (
+
   <StyledWheelchairButton
     onClick={onClick}
   >

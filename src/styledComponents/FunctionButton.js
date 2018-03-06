@@ -4,10 +4,10 @@ import styled from 'styled-components';
 const StyledFunctionButton = styled.button`
   font-size: 24px;
   font-family: "Roboto", sans-serif;
-  color: #000;
+  color: #FFF;
+  background-color: rgba(30,30,30,0.3);
   height: 48px;
   width: 300px;
-  border-radius: 2px;
 
   @media (max-width: 1024px) {
   font-size: 20px;
