@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import firebase from 'firebase'
 import { MultiGrid, AutoSizer } from 'react-virtualized'
+import { arrivalList, departureList, preboardList, transferList } from '../../config/constants';
 import styles from '../../styles/Table.css'
 import cn from 'classnames'
 
@@ -10,10 +11,10 @@ export default class Table extends PureComponent {
 		this.state = {
 			tableType: 'arrivals',
 			searchText: '',
-			arrivalList: [['Airline', 'Comments', 'Dropoff', 'Device ID', 'User', 'Flight', 'P1 First Name', 'P1 Last Name', 'P1 Wheelchair', 'P2 First Name', 'P2 Last Name', 'P2 Wheelchair', 'Start Location', 'Starting GPS', 'Stops', 'End Time', 'Start Time']],
-			departureList: [['Airline', 'Final Comments', 'TSA Comments', 'Destination Gate', 'Device ID', 'User', 'Final Gate', 'Flight', 'P1 First Name', 'P1 Last Name', 'P1 Wheelchair', 'P2 First Name', 'P2 Last Name', 'P2 Wheelchair', 'Start Location', 'Starting GPS', 'Stops', 'End Time', 'Start Time', 'TSA Start Time', 'TSA End Time']],
-			preboardList: [['Airline', 'Comments', 'Device ID', 'User', 'Flight', 'First Name', 'Last Name', 'Wheelchair', 'Preboard Type', 'Starting Gate', 'End Time', 'Start Time']],
-			transferList: [['Airline', 'Comments', 'Device ID', 'User', 'Ending Gate', 'Flight', 'First Name', 'Last Name', 'Wheelchair', 'Starting Gate', 'End Time', 'Start Time']]
+			arrivalList,
+			departureList,
+			preboardList,
+			transferList
 		}
 
 		this.cellRenderer = this.cellRenderer.bind(this);
