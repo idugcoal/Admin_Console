@@ -5,11 +5,13 @@ const StyledWheelchairButton = styled.button`
   font-size: 20px;
   font-family: "Roboto", sans-serif;
   color: rgba(255,255,255,0.9);
-  background-color: rgba(30,30,30,0.3);
+  background: transparent;
   height: 40px;
   width: 40px;
   cursor: pointer;
-  border: 1px solid white;
+  border: 1px solid rgba(255,255,255,0.6);
+  margin: 1px;
+  box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.75);
   
   @media (max-width: 1024px) {
   font-size: 16px;
@@ -28,7 +30,7 @@ const WheelchairButton = ({ children, onClick, color }) => (
 
   <StyledWheelchairButton
     onClick={onClick}
-    style={{'background-color': color}}
+    style={{'color': color}}
   >
     {children}
   </StyledWheelchairButton>

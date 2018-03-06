@@ -95,7 +95,7 @@ export default class Map extends Component {
       <WheelchairButton 
         key={number}
         onClick={this.onButtonPress}
-        color={this.state.active[number] ? 'rgba(0,255,0,0.6)' : 'rgba(255,0,0,0.6'}
+        color={this.state.active[number] ? '#7AEF8E' : '#F37CB8'}
         >
         {number}
       </WheelchairButton>
